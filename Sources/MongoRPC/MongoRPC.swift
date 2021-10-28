@@ -11,4 +11,21 @@ public struct MongoRPC {
         let connection = ClientConnection(configuration: configuration)
         client = Mongorpc_MongoRPCClient(channel: connection)
     }
+    
+    public func listCollections() {
+        var request: Mongorpc_ListCollectionsRequest = Mongorpc_ListCollectionsRequest.init()
+        request.database = "sample_mflix"
+       let call = client.listCollections(request, callOptions: nil)
+        
+    
+       try? call.response.always { result in
+            switch result {
+                
+            case .success(let res):
+                print(res)
+            case .failure(let error):
+                print(error)
+            }
+        }.wait()
+    }
 }

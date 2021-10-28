@@ -24,64 +24,199 @@ import GRPC
 import NIO
 import SwiftProtobuf
 
+
+/// MongoRPC
+///
 /// Usage: instantiate `Mongorpc_MongoRPCClient`, then call methods of this protocol to make API calls.
 internal protocol Mongorpc_MongoRPCClientProtocol: GRPCClient {
-    var serviceName: String { get }
-    var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? { get }
+  var serviceName: String { get }
+  var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? { get }
 
-    func listCollections(
-        _ request: Mongorpc_ListCollectionsRequest,
-        callOptions: CallOptions?
-    ) -> UnaryCall<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse>
+  func listCollections(
+    _ request: Mongorpc_ListCollectionsRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse>
+
+  func getDocument(
+    _ request: Mongorpc_GetDocumentRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse>
+
+  func listDocuments(
+    _ request: Mongorpc_ListDocumentsRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse>
+
+  func createDocument(
+    _ request: Mongorpc_CreateDocumentRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse>
+
+  func updateDocument(
+    _ request: Mongorpc_UpdateDocumentRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse>
+
+  func deleteDocument(
+    _ request: Mongorpc_DeleteDocumentRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse>
 }
 
 extension Mongorpc_MongoRPCClientProtocol {
-    var serviceName: String {
-        return "mongorpc.MongoRPC"
-    }
+  internal var serviceName: String {
+    return "mongorpc.MongoRPC"
+  }
 
-    /// Unary call to ListCollections
-    ///
-    /// - Parameters:
-    ///   - request: Request to send to ListCollections.
-    ///   - callOptions: Call options.
-    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-    func listCollections(
-        _ request: Mongorpc_ListCollectionsRequest,
-        callOptions: CallOptions? = nil
-    ) -> UnaryCall<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse> {
-        return makeUnaryCall(
-            path: "/mongorpc.MongoRPC/ListCollections",
-            request: request,
-            callOptions: callOptions ?? defaultCallOptions,
-            interceptors: interceptors?.makeListCollectionsInterceptors() ?? []
-        )
-    }
+  /// ListCollections lists the collections in a database.
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to ListCollections.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func listCollections(
+    _ request: Mongorpc_ListCollectionsRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse> {
+    return self.makeUnaryCall(
+      path: "/mongorpc.MongoRPC/ListCollections",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeListCollectionsInterceptors() ?? []
+    )
+  }
+
+  /// GetDocument gets a document from a collection.
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetDocument.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func getDocument(
+    _ request: Mongorpc_GetDocumentRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse> {
+    return self.makeUnaryCall(
+      path: "/mongorpc.MongoRPC/GetDocument",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetDocumentInterceptors() ?? []
+    )
+  }
+
+  /// ListDocuments lists the documents in a collection.
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to ListDocuments.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func listDocuments(
+    _ request: Mongorpc_ListDocumentsRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse> {
+    return self.makeUnaryCall(
+      path: "/mongorpc.MongoRPC/ListDocuments",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeListDocumentsInterceptors() ?? []
+    )
+  }
+
+  /// CreateDocument creates a document in a collection.
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to CreateDocument.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func createDocument(
+    _ request: Mongorpc_CreateDocumentRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse> {
+    return self.makeUnaryCall(
+      path: "/mongorpc.MongoRPC/CreateDocument",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCreateDocumentInterceptors() ?? []
+    )
+  }
+
+  /// UpdateDocument updates a document in a collection.
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to UpdateDocument.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func updateDocument(
+    _ request: Mongorpc_UpdateDocumentRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse> {
+    return self.makeUnaryCall(
+      path: "/mongorpc.MongoRPC/UpdateDocument",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateDocumentInterceptors() ?? []
+    )
+  }
+
+  /// DeleteDocument deletes a document from a collection.
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to DeleteDocument.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func deleteDocument(
+    _ request: Mongorpc_DeleteDocumentRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse> {
+    return self.makeUnaryCall(
+      path: "/mongorpc.MongoRPC/DeleteDocument",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeDeleteDocumentInterceptors() ?? []
+    )
+  }
 }
 
 internal protocol Mongorpc_MongoRPCClientInterceptorFactoryProtocol {
-    /// - Returns: Interceptors to use when invoking 'listCollections'.
-    func makeListCollectionsInterceptors() -> [ClientInterceptor<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'listCollections'.
+  func makeListCollectionsInterceptors() -> [ClientInterceptor<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'getDocument'.
+  func makeGetDocumentInterceptors() -> [ClientInterceptor<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'listDocuments'.
+  func makeListDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'createDocument'.
+  func makeCreateDocumentInterceptors() -> [ClientInterceptor<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'updateDocument'.
+  func makeUpdateDocumentInterceptors() -> [ClientInterceptor<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'deleteDocument'.
+  func makeDeleteDocumentInterceptors() -> [ClientInterceptor<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse>]
 }
 
 internal final class Mongorpc_MongoRPCClient: Mongorpc_MongoRPCClientProtocol {
-    internal let channel: GRPCChannel
-    internal var defaultCallOptions: CallOptions
-    internal var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol?
+  internal let channel: GRPCChannel
+  internal var defaultCallOptions: CallOptions
+  internal var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol?
 
-    /// Creates a client for the mongorpc.MongoRPC service.
-    ///
-    /// - Parameters:
-    ///   - channel: `GRPCChannel` to the service host.
-    ///   - defaultCallOptions: Options to use for each service call if the user doesn't provide them.
-    ///   - interceptors: A factory providing interceptors for each RPC.
-    internal init(
-        channel: GRPCChannel,
-        defaultCallOptions: CallOptions = CallOptions(),
-        interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? = nil
-    ) {
-        self.channel = channel
-        self.defaultCallOptions = defaultCallOptions
-        self.interceptors = interceptors
-    }
+  /// Creates a client for the mongorpc.MongoRPC service.
+  ///
+  /// - Parameters:
+  ///   - channel: `GRPCChannel` to the service host.
+  ///   - defaultCallOptions: Options to use for each service call if the user doesn't provide them.
+  ///   - interceptors: A factory providing interceptors for each RPC.
+  internal init(
+    channel: GRPCChannel,
+    defaultCallOptions: CallOptions = CallOptions(),
+    interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? = nil
+  ) {
+    self.channel = channel
+    self.defaultCallOptions = defaultCallOptions
+    self.interceptors = interceptors
+  }
 }
+

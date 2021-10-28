@@ -7,7 +7,7 @@
 // For information on using the generated types, please see the documentation:
 //   https://github.com/apple/swift-protobuf/
 
-// Copyright 2020 Google LLC
+// Copyright 2021 MongoRPC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,745 +29,1250 @@ import SwiftProtobuf
 // incompatible with the version of SwiftProtobuf to which you are linking.
 // Please ensure that you are building against the same version of the API
 // that was used to generate this file.
-private struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
-    struct _2: SwiftProtobuf.ProtobufAPIVersion_2 {}
-    typealias Version = _2
+fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAPIVersionCheck {
+  struct _2: SwiftProtobuf.ProtobufAPIVersion_2 {}
+  typealias Version = _2
 }
 
-/// `NullValue` is a singleton enumeration to represent the null value for the
-/// `Value` type union.
-///
-///  The JSON representation for `NullValue` is JSON `null`.
-enum Mongorpc_NullValue: SwiftProtobuf.Enum {
-    typealias RawValue = Int
+/// Null is a special type that is used to represent a null value in a MongoDB
+enum Mongorpc_Null: SwiftProtobuf.Enum {
+  typealias RawValue = Int
+  case value // = 0
+  case UNRECOGNIZED(Int)
 
-    /// Null value.
-    case nullValue // = 0
-    case UNRECOGNIZED(Int)
+  init() {
+    self = .value
+  }
 
-    init() {
-        self = .nullValue
+  init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .value
+    default: self = .UNRECOGNIZED(rawValue)
     }
+  }
 
-    init?(rawValue: Int) {
-        switch rawValue {
-        case 0: self = .nullValue
-        default: self = .UNRECOGNIZED(rawValue)
-        }
+  var rawValue: Int {
+    switch self {
+    case .value: return 0
+    case .UNRECOGNIZED(let i): return i
     }
+  }
 
-    var rawValue: Int {
-        switch self {
-        case .nullValue: return 0
-        case let .UNRECOGNIZED(i): return i
-        }
-    }
 }
 
 #if swift(>=4.2)
 
-    extension Mongorpc_NullValue: CaseIterable {
-        // The compiler won't synthesize support with the UNRECOGNIZED case.
-        static var allCases: [Mongorpc_NullValue] = [
-            .nullValue,
-        ]
-    }
-
-#endif // swift(>=4.2)
-
-struct Mongorpc_LatLng {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    /// The latitude in degrees. It must be in the range [-90.0, +90.0].
-    var latitude: Double = 0
-
-    /// The longitude in degrees. It must be in the range [-180.0, +180.0].
-    var longitude: Double = 0
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
+extension Mongorpc_Null: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  static var allCases: [Mongorpc_Null] = [
+    .value,
+  ]
 }
 
+#endif  // swift(>=4.2)
+
+/// Array is a special type that is used to represent an array value in a MongoDB
+struct Mongorpc_Array {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var values: [Mongorpc_Value] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Map is a special type that is used to represent a map value in a MongoDB
+struct Mongorpc_Map {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var fields: Dictionary<String,Mongorpc_Value> = [:]
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// Timestamp is a special type that is used to represent a timestamp value in a MongoDB
 struct Mongorpc_Timestamp {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
 
-    /// Represents seconds of UTC time since Unix epoch
-    /// 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
-    /// 9999-12-31T23:59:59Z inclusive.
-    var seconds: Int64 = 0
+  var seconds: Int64 = 0
 
-    /// Non-negative fractions of a second at nanosecond resolution. Negative
-    /// second values with fractions must still have non-negative nanos values
-    /// that count forward in time. Must be from 0 to 999,999,999
-    /// inclusive.
-    var nanos: Int32 = 0
+  var nanos: Int32 = 0
 
-    var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-    init() {}
+  init() {}
 }
 
-/// An array value.
-struct Mongorpc_ArrayValue {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    /// Values in the array.
-    var values: [Mongorpc_Value] = []
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-}
-
-/// A map value.
-struct Mongorpc_MapValue {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    /// The map's fields.
-    ///
-    /// The map keys represent field names. Field names matching the regular
-    /// expression `__.*__` are reserved. Reserved field names are forbidden except
-    /// in certain documented contexts. The map keys, represented as UTF-8, must
-    /// not exceed 1,500 bytes and cannot be empty.
-    var fields: [String: Mongorpc_Value] = [:]
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-}
-
-/// A message that can hold any of the supported value types.
+/// Value is a special type that is used to represent a value in a MongoDB
 struct Mongorpc_Value {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
 
-    /// Must have a value set.
-    var valueType: Mongorpc_Value.OneOf_ValueType?
+  var type: Mongorpc_Value.OneOf_Type? = nil
 
-    /// A null value.
-    var nullValue: Mongorpc_NullValue {
-        get {
-            if case let .nullValue(v)? = valueType { return v }
-            return .nullValue
-        }
-        set { valueType = .nullValue(newValue) }
+  /// double represents a double value in a MongoDB
+  var doubleValue: Double {
+    get {
+      if case .doubleValue(let v)? = type {return v}
+      return 0
     }
+    set {type = .doubleValue(newValue)}
+  }
 
-    /// A boolean value.
-    var booleanValue: Bool {
-        get {
-            if case let .booleanValue(v)? = valueType { return v }
-            return false
-        }
-        set { valueType = .booleanValue(newValue) }
+  /// string represents a string value in a MongoDB
+  var stringValue: String {
+    get {
+      if case .stringValue(let v)? = type {return v}
+      return String()
     }
+    set {type = .stringValue(newValue)}
+  }
 
-    /// An integer value.
-    var integerValue: Int64 {
-        get {
-            if case let .integerValue(v)? = valueType { return v }
-            return 0
-        }
-        set { valueType = .integerValue(newValue) }
+  /// Map represents a map value in a MongoDB
+  var mapValue: Mongorpc_Map {
+    get {
+      if case .mapValue(let v)? = type {return v}
+      return Mongorpc_Map()
     }
+    set {type = .mapValue(newValue)}
+  }
 
-    /// A double value.
-    var doubleValue: Double {
-        get {
-            if case let .doubleValue(v)? = valueType { return v }
-            return 0
-        }
-        set { valueType = .doubleValue(newValue) }
+  /// Array represents an array value in a MongoDB
+  var arrayValue: Mongorpc_Array {
+    get {
+      if case .arrayValue(let v)? = type {return v}
+      return Mongorpc_Array()
     }
+    set {type = .arrayValue(newValue)}
+  }
 
-    /// A timestamp value.
-    ///
-    /// Precise only to microseconds. When stored, any additional precision is
-    /// rounded down.
-    var timestampValue: Mongorpc_Timestamp {
-        get {
-            if case let .timestampValue(v)? = valueType { return v }
-            return Mongorpc_Timestamp()
-        }
-        set { valueType = .timestampValue(newValue) }
+  /// Bytes represents a bytes value in a MongoDB
+  var bytesValue: Data {
+    get {
+      if case .bytesValue(let v)? = type {return v}
+      return Data()
     }
+    set {type = .bytesValue(newValue)}
+  }
 
-    /// A string value.
-    ///
-    /// The string, represented as UTF-8, must not exceed 1 MiB - 89 bytes.
-    /// Only the first 1,500 bytes of the UTF-8 representation are considered by
-    /// queries.
-    var stringValue: String {
-        get {
-            if case let .stringValue(v)? = valueType { return v }
-            return String()
-        }
-        set { valueType = .stringValue(newValue) }
+  /// Boolean represents a boolean value in a MongoDB
+  var boolValue: Bool {
+    get {
+      if case .boolValue(let v)? = type {return v}
+      return false
     }
+    set {type = .boolValue(newValue)}
+  }
 
-    /// A bytes value.
-    ///
-    /// Must not exceed 1 MiB - 89 bytes.
-    /// Only the first 1,500 bytes are considered by queries.
-    var bytesValue: Data {
-        get {
-            if case let .bytesValue(v)? = valueType { return v }
-            return Data()
-        }
-        set { valueType = .bytesValue(newValue) }
+  /// Timestamp represents a timestamp value in a MongoDB
+  var dateValue: Mongorpc_Timestamp {
+    get {
+      if case .dateValue(let v)? = type {return v}
+      return Mongorpc_Timestamp()
     }
+    set {type = .dateValue(newValue)}
+  }
 
-    /// A geo point value representing a point on the surface of Earth.
-    var geoPointValue: Mongorpc_LatLng {
-        get {
-            if case let .geoPointValue(v)? = valueType { return v }
-            return Mongorpc_LatLng()
-        }
-        set { valueType = .geoPointValue(newValue) }
+  /// Null represents a null value in a MongoDB
+  var nullValue: Mongorpc_Null {
+    get {
+      if case .nullValue(let v)? = type {return v}
+      return .value
     }
+    set {type = .nullValue(newValue)}
+  }
 
-    /// An array value.
-    ///
-    /// Cannot directly contain another array value, though can contain an
-    /// map which contains another array.
-    var arrayValue: Mongorpc_ArrayValue {
-        get {
-            if case let .arrayValue(v)? = valueType { return v }
-            return Mongorpc_ArrayValue()
-        }
-        set { valueType = .arrayValue(newValue) }
+  /// integer represents an integer value in a MongoDB
+  var integerValue: Int64 {
+    get {
+      if case .integerValue(let v)? = type {return v}
+      return 0
     }
+    set {type = .integerValue(newValue)}
+  }
 
-    /// A map value.
-    var mapValue: Mongorpc_MapValue {
-        get {
-            if case let .mapValue(v)? = valueType { return v }
-            return Mongorpc_MapValue()
-        }
-        set { valueType = .mapValue(newValue) }
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  enum OneOf_Type: Equatable {
+    /// double represents a double value in a MongoDB
+    case doubleValue(Double)
+    /// string represents a string value in a MongoDB
+    case stringValue(String)
+    /// Map represents a map value in a MongoDB
+    case mapValue(Mongorpc_Map)
+    /// Array represents an array value in a MongoDB
+    case arrayValue(Mongorpc_Array)
+    /// Bytes represents a bytes value in a MongoDB
+    case bytesValue(Data)
+    /// Boolean represents a boolean value in a MongoDB
+    case boolValue(Bool)
+    /// Timestamp represents a timestamp value in a MongoDB
+    case dateValue(Mongorpc_Timestamp)
+    /// Null represents a null value in a MongoDB
+    case nullValue(Mongorpc_Null)
+    /// integer represents an integer value in a MongoDB
+    case integerValue(Int64)
+
+  #if !swift(>=4.1)
+    static func ==(lhs: Mongorpc_Value.OneOf_Type, rhs: Mongorpc_Value.OneOf_Type) -> Bool {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch (lhs, rhs) {
+      case (.doubleValue, .doubleValue): return {
+        guard case .doubleValue(let l) = lhs, case .doubleValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.stringValue, .stringValue): return {
+        guard case .stringValue(let l) = lhs, case .stringValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.mapValue, .mapValue): return {
+        guard case .mapValue(let l) = lhs, case .mapValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.arrayValue, .arrayValue): return {
+        guard case .arrayValue(let l) = lhs, case .arrayValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.bytesValue, .bytesValue): return {
+        guard case .bytesValue(let l) = lhs, case .bytesValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.boolValue, .boolValue): return {
+        guard case .boolValue(let l) = lhs, case .boolValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.dateValue, .dateValue): return {
+        guard case .dateValue(let l) = lhs, case .dateValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.nullValue, .nullValue): return {
+        guard case .nullValue(let l) = lhs, case .nullValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.integerValue, .integerValue): return {
+        guard case .integerValue(let l) = lhs, case .integerValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      default: return false
+      }
     }
+  #endif
+  }
 
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    /// Must have a value set.
-    enum OneOf_ValueType: Equatable {
-        /// A null value.
-        case nullValue(Mongorpc_NullValue)
-        /// A boolean value.
-        case booleanValue(Bool)
-        /// An integer value.
-        case integerValue(Int64)
-        /// A double value.
-        case doubleValue(Double)
-        /// A timestamp value.
-        ///
-        /// Precise only to microseconds. When stored, any additional precision is
-        /// rounded down.
-        case timestampValue(Mongorpc_Timestamp)
-        /// A string value.
-        ///
-        /// The string, represented as UTF-8, must not exceed 1 MiB - 89 bytes.
-        /// Only the first 1,500 bytes of the UTF-8 representation are considered by
-        /// queries.
-        case stringValue(String)
-        /// A bytes value.
-        ///
-        /// Must not exceed 1 MiB - 89 bytes.
-        /// Only the first 1,500 bytes are considered by queries.
-        case bytesValue(Data)
-        /// A geo point value representing a point on the surface of Earth.
-        case geoPointValue(Mongorpc_LatLng)
-        /// An array value.
-        ///
-        /// Cannot directly contain another array value, though can contain an
-        /// map which contains another array.
-        case arrayValue(Mongorpc_ArrayValue)
-        /// A map value.
-        case mapValue(Mongorpc_MapValue)
-
-        #if !swift(>=4.1)
-            static func == (lhs: Mongorpc_Value.OneOf_ValueType, rhs: Mongorpc_Value.OneOf_ValueType) -> Bool {
-                // The use of inline closures is to circumvent an issue where the compiler
-                // allocates stack space for every case branch when no optimizations are
-                // enabled. https://github.com/apple/swift-protobuf/issues/1034
-                switch (lhs, rhs) {
-                case (.nullValue, .nullValue): return {
-                        guard case let .nullValue(l) = lhs, case let .nullValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.booleanValue, .booleanValue): return {
-                        guard case let .booleanValue(l) = lhs, case let .booleanValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.integerValue, .integerValue): return {
-                        guard case let .integerValue(l) = lhs, case let .integerValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.doubleValue, .doubleValue): return {
-                        guard case let .doubleValue(l) = lhs, case let .doubleValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.timestampValue, .timestampValue): return {
-                        guard case let .timestampValue(l) = lhs, case let .timestampValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.stringValue, .stringValue): return {
-                        guard case let .stringValue(l) = lhs, case let .stringValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.bytesValue, .bytesValue): return {
-                        guard case let .bytesValue(l) = lhs, case let .bytesValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.geoPointValue, .geoPointValue): return {
-                        guard case let .geoPointValue(l) = lhs, case let .geoPointValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.arrayValue, .arrayValue): return {
-                        guard case let .arrayValue(l) = lhs, case let .arrayValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                case (.mapValue, .mapValue): return {
-                        guard case let .mapValue(l) = lhs, case let .mapValue(r) = rhs else { preconditionFailure() }
-                        return l == r
-                    }()
-                default: return false
-                }
-            }
-        #endif
-    }
-
-    init() {}
+  init() {}
 }
 
+/// ListCollectionsRequest is a special type that is used to represent a list collections request in a MongoDB
 struct Mongorpc_ListCollectionsRequest {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
 
-    var database = String()
+  /// Database name
+  var database: String = String()
 
-    var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-    init() {}
+  init() {}
 }
 
+/// ListCollectionsResponse is a special type that is used to represent a list collections response in a MongoDB
 struct Mongorpc_ListCollectionsResponse {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
 
-    var fields: [String: Mongorpc_Value] = [:]
+  /// Array of collection names
+  var collections: Mongorpc_Array {
+    get {return _collections ?? Mongorpc_Array()}
+    set {_collections = newValue}
+  }
+  /// Returns true if `collections` has been explicitly set.
+  var hasCollections: Bool {return self._collections != nil}
+  /// Clears the value of `collections`. Subsequent reads from it will return its default value.
+  mutating func clearCollections() {self._collections = nil}
 
-    var unknownFields = SwiftProtobuf.UnknownStorage()
+  var unknownFields = SwiftProtobuf.UnknownStorage()
 
-    init() {}
+  init() {}
+
+  fileprivate var _collections: Mongorpc_Array? = nil
+}
+
+/// GetCollectionRequest is a special type that is used to represent a get collection request in a MongoDB
+struct Mongorpc_GetDocumentRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// The database to query
+  var database: String = String()
+
+  /// The collection to query
+  var collection: String = String()
+
+  /// The document to query
+  var documentID: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// GetDocumentResponse is a special type that is used to represent a get document response in a MongoDB
+struct Mongorpc_GetDocumentResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Document Value
+  var document: Mongorpc_Value {
+    get {return _document ?? Mongorpc_Value()}
+    set {_document = newValue}
+  }
+  /// Returns true if `document` has been explicitly set.
+  var hasDocument: Bool {return self._document != nil}
+  /// Clears the value of `document`. Subsequent reads from it will return its default value.
+  mutating func clearDocument() {self._document = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _document: Mongorpc_Value? = nil
+}
+
+/// ListDocumentsRequest is a special type that is used to represent a list documents request in a MongoDB
+struct Mongorpc_ListDocumentsRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// The database to query
+  var database: String = String()
+
+  /// The collection to query
+  var collection: String = String()
+
+  /// Limit the number of documents returned
+  var limit: Int32 = 0
+
+  /// Skip the first n documents
+  var skip: Int32 = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// ListDocumentsResponse is a special type that is used to represent a list documents response in a MongoDB
+struct Mongorpc_ListDocumentsResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Array of documents
+  var documents: Mongorpc_Array {
+    get {return _documents ?? Mongorpc_Array()}
+    set {_documents = newValue}
+  }
+  /// Returns true if `documents` has been explicitly set.
+  var hasDocuments: Bool {return self._documents != nil}
+  /// Clears the value of `documents`. Subsequent reads from it will return its default value.
+  mutating func clearDocuments() {self._documents = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _documents: Mongorpc_Array? = nil
+}
+
+/// InsertDocumentRequest is a special type that is used to represent a insert document request in a MongoDB
+struct Mongorpc_CreateDocumentRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// The database to insert the document into
+  var database: String = String()
+
+  /// The collection to insert the document into
+  var collection: String = String()
+
+  /// The document to insert
+  var document: Mongorpc_Value {
+    get {return _document ?? Mongorpc_Value()}
+    set {_document = newValue}
+  }
+  /// Returns true if `document` has been explicitly set.
+  var hasDocument: Bool {return self._document != nil}
+  /// Clears the value of `document`. Subsequent reads from it will return its default value.
+  mutating func clearDocument() {self._document = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _document: Mongorpc_Value? = nil
+}
+
+/// InsertDocumentResponse is a special type that is used to represent a insert document response in a MongoDB
+struct Mongorpc_CreateDocumentResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// document id
+  var documentID: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// UpdateDocumentRequest is a special type that is used to represent a update document request in a MongoDB
+struct Mongorpc_UpdateDocumentRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// The database to use
+  var database: String = String()
+
+  /// The collection to use
+  var collection: String = String()
+
+  /// The document to update
+  var documentID: String = String()
+
+  /// Document Values
+  var document: Mongorpc_Value {
+    get {return _document ?? Mongorpc_Value()}
+    set {_document = newValue}
+  }
+  /// Returns true if `document` has been explicitly set.
+  var hasDocument: Bool {return self._document != nil}
+  /// Clears the value of `document`. Subsequent reads from it will return its default value.
+  mutating func clearDocument() {self._document = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _document: Mongorpc_Value? = nil
+}
+
+/// UpdateDocumentResponse is a special type that is used to represent a update document response in a MongoDB
+struct Mongorpc_UpdateDocumentResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Document ID of the updated document
+  var documentID: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// DeleteDocumentRequest is a special type that is used to represent a delete document request in a MongoDB
+struct Mongorpc_DeleteDocumentRequest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// database name
+  var database: String = String()
+
+  /// collection name
+  var collection: String = String()
+
+  /// document id
+  var documentID: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// DeleteDocumentResponse is a special type that is used to represent a delete document response in a MongoDB
+struct Mongorpc_DeleteDocumentResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Deleted Document Count
+  var deletedCount: Int64 = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-private let _protobuf_package = "mongorpc"
+fileprivate let _protobuf_package = "mongorpc"
 
-extension Mongorpc_NullValue: SwiftProtobuf._ProtoNameProviding {
-    static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-        0: .same(proto: "NULL_VALUE"),
-    ]
+extension Mongorpc_Null: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "NULL_VALUE"),
+  ]
 }
 
-extension Mongorpc_LatLng: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-    static let protoMessageName: String = _protobuf_package + ".LatLng"
-    static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-        1: .same(proto: "latitude"),
-        2: .same(proto: "longitude"),
-    ]
+extension Mongorpc_Array: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Array"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "values"),
+  ]
 
-    mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-        while let fieldNumber = try decoder.nextFieldNumber() {
-            // The use of inline closures is to circumvent an issue where the compiler
-            // allocates stack space for every case branch when no optimizations are
-            // enabled. https://github.com/apple/swift-protobuf/issues/1034
-            switch fieldNumber {
-            case 1: try { try decoder.decodeSingularDoubleField(value: &self.latitude) }()
-            case 2: try { try decoder.decodeSingularDoubleField(value: &self.longitude) }()
-            default: break
-            }
-        }
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.values) }()
+      default: break
+      }
     }
+  }
 
-    func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-        if latitude != 0 {
-            try visitor.visitSingularDoubleField(value: latitude, fieldNumber: 1)
-        }
-        if longitude != 0 {
-            try visitor.visitSingularDoubleField(value: longitude, fieldNumber: 2)
-        }
-        try unknownFields.traverse(visitor: &visitor)
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.values.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.values, fieldNumber: 1)
     }
+    try unknownFields.traverse(visitor: &visitor)
+  }
 
-    static func == (lhs: Mongorpc_LatLng, rhs: Mongorpc_LatLng) -> Bool {
-        if lhs.latitude != rhs.latitude { return false }
-        if lhs.longitude != rhs.longitude { return false }
-        if lhs.unknownFields != rhs.unknownFields { return false }
-        return true
+  static func ==(lhs: Mongorpc_Array, rhs: Mongorpc_Array) -> Bool {
+    if lhs.values != rhs.values {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_Map: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Map"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "fields"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString,Mongorpc_Value>.self, value: &self.fields) }()
+      default: break
+      }
     }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.fields.isEmpty {
+      try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString,Mongorpc_Value>.self, value: self.fields, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_Map, rhs: Mongorpc_Map) -> Bool {
+    if lhs.fields != rhs.fields {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
 }
 
 extension Mongorpc_Timestamp: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-    static let protoMessageName: String = _protobuf_package + ".Timestamp"
-    static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-        1: .same(proto: "seconds"),
-        2: .same(proto: "nanos"),
-    ]
+  static let protoMessageName: String = _protobuf_package + ".Timestamp"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "seconds"),
+    2: .same(proto: "nanos"),
+  ]
 
-    mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-        while let fieldNumber = try decoder.nextFieldNumber() {
-            // The use of inline closures is to circumvent an issue where the compiler
-            // allocates stack space for every case branch when no optimizations are
-            // enabled. https://github.com/apple/swift-protobuf/issues/1034
-            switch fieldNumber {
-            case 1: try { try decoder.decodeSingularInt64Field(value: &self.seconds) }()
-            case 2: try { try decoder.decodeSingularInt32Field(value: &self.nanos) }()
-            default: break
-            }
-        }
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularInt64Field(value: &self.seconds) }()
+      case 2: try { try decoder.decodeSingularInt32Field(value: &self.nanos) }()
+      default: break
+      }
     }
+  }
 
-    func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-        if seconds != 0 {
-            try visitor.visitSingularInt64Field(value: seconds, fieldNumber: 1)
-        }
-        if nanos != 0 {
-            try visitor.visitSingularInt32Field(value: nanos, fieldNumber: 2)
-        }
-        try unknownFields.traverse(visitor: &visitor)
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.seconds != 0 {
+      try visitor.visitSingularInt64Field(value: self.seconds, fieldNumber: 1)
     }
-
-    static func == (lhs: Mongorpc_Timestamp, rhs: Mongorpc_Timestamp) -> Bool {
-        if lhs.seconds != rhs.seconds { return false }
-        if lhs.nanos != rhs.nanos { return false }
-        if lhs.unknownFields != rhs.unknownFields { return false }
-        return true
+    if self.nanos != 0 {
+      try visitor.visitSingularInt32Field(value: self.nanos, fieldNumber: 2)
     }
-}
+    try unknownFields.traverse(visitor: &visitor)
+  }
 
-extension Mongorpc_ArrayValue: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-    static let protoMessageName: String = _protobuf_package + ".ArrayValue"
-    static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-        1: .same(proto: "values"),
-    ]
-
-    mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-        while let fieldNumber = try decoder.nextFieldNumber() {
-            // The use of inline closures is to circumvent an issue where the compiler
-            // allocates stack space for every case branch when no optimizations are
-            // enabled. https://github.com/apple/swift-protobuf/issues/1034
-            switch fieldNumber {
-            case 1: try { try decoder.decodeRepeatedMessageField(value: &self.values) }()
-            default: break
-            }
-        }
-    }
-
-    func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-        if !values.isEmpty {
-            try visitor.visitRepeatedMessageField(value: values, fieldNumber: 1)
-        }
-        try unknownFields.traverse(visitor: &visitor)
-    }
-
-    static func == (lhs: Mongorpc_ArrayValue, rhs: Mongorpc_ArrayValue) -> Bool {
-        if lhs.values != rhs.values { return false }
-        if lhs.unknownFields != rhs.unknownFields { return false }
-        return true
-    }
-}
-
-extension Mongorpc_MapValue: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-    static let protoMessageName: String = _protobuf_package + ".MapValue"
-    static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-        1: .same(proto: "fields"),
-    ]
-
-    mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-        while let fieldNumber = try decoder.nextFieldNumber() {
-            // The use of inline closures is to circumvent an issue where the compiler
-            // allocates stack space for every case branch when no optimizations are
-            // enabled. https://github.com/apple/swift-protobuf/issues/1034
-            switch fieldNumber {
-            case 1: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString, Mongorpc_Value>.self, value: &self.fields) }()
-            default: break
-            }
-        }
-    }
-
-    func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-        if !fields.isEmpty {
-            try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString, Mongorpc_Value>.self, value: fields, fieldNumber: 1)
-        }
-        try unknownFields.traverse(visitor: &visitor)
-    }
-
-    static func == (lhs: Mongorpc_MapValue, rhs: Mongorpc_MapValue) -> Bool {
-        if lhs.fields != rhs.fields { return false }
-        if lhs.unknownFields != rhs.unknownFields { return false }
-        return true
-    }
+  static func ==(lhs: Mongorpc_Timestamp, rhs: Mongorpc_Timestamp) -> Bool {
+    if lhs.seconds != rhs.seconds {return false}
+    if lhs.nanos != rhs.nanos {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
 }
 
 extension Mongorpc_Value: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-    static let protoMessageName: String = _protobuf_package + ".Value"
-    static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-        11: .standard(proto: "null_value"),
-        1: .standard(proto: "boolean_value"),
-        2: .standard(proto: "integer_value"),
-        3: .standard(proto: "double_value"),
-        10: .standard(proto: "timestamp_value"),
-        17: .standard(proto: "string_value"),
-        18: .standard(proto: "bytes_value"),
-        8: .standard(proto: "geo_point_value"),
-        9: .standard(proto: "array_value"),
-        6: .standard(proto: "map_value"),
-    ]
+  static let protoMessageName: String = _protobuf_package + ".Value"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "double_value"),
+    2: .standard(proto: "string_value"),
+    3: .standard(proto: "map_value"),
+    4: .standard(proto: "array_value"),
+    5: .standard(proto: "bytes_value"),
+    8: .standard(proto: "bool_value"),
+    9: .standard(proto: "date_value"),
+    10: .standard(proto: "null_value"),
+    23: .standard(proto: "integer_value"),
+  ]
 
-    mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-        while let fieldNumber = try decoder.nextFieldNumber() {
-            // The use of inline closures is to circumvent an issue where the compiler
-            // allocates stack space for every case branch when no optimizations are
-            // enabled. https://github.com/apple/swift-protobuf/issues/1034
-            switch fieldNumber {
-            case 1: try {
-                    var v: Bool?
-                    try decoder.decodeSingularBoolField(value: &v)
-                    if let v = v {
-                        if self.valueType != nil { try decoder.handleConflictingOneOf() }
-                        self.valueType = .booleanValue(v)
-                    }
-                }()
-            case 2: try {
-                    var v: Int64?
-                    try decoder.decodeSingularInt64Field(value: &v)
-                    if let v = v {
-                        if self.valueType != nil { try decoder.handleConflictingOneOf() }
-                        self.valueType = .integerValue(v)
-                    }
-                }()
-            case 3: try {
-                    var v: Double?
-                    try decoder.decodeSingularDoubleField(value: &v)
-                    if let v = v {
-                        if self.valueType != nil { try decoder.handleConflictingOneOf() }
-                        self.valueType = .doubleValue(v)
-                    }
-                }()
-            case 6: try {
-                    var v: Mongorpc_MapValue?
-                    var hadOneofValue = false
-                    if let current = self.valueType {
-                        hadOneofValue = true
-                        if case let .mapValue(m) = current { v = m }
-                    }
-                    try decoder.decodeSingularMessageField(value: &v)
-                    if let v = v {
-                        if hadOneofValue { try decoder.handleConflictingOneOf() }
-                        self.valueType = .mapValue(v)
-                    }
-                }()
-            case 8: try {
-                    var v: Mongorpc_LatLng?
-                    var hadOneofValue = false
-                    if let current = self.valueType {
-                        hadOneofValue = true
-                        if case let .geoPointValue(m) = current { v = m }
-                    }
-                    try decoder.decodeSingularMessageField(value: &v)
-                    if let v = v {
-                        if hadOneofValue { try decoder.handleConflictingOneOf() }
-                        self.valueType = .geoPointValue(v)
-                    }
-                }()
-            case 9: try {
-                    var v: Mongorpc_ArrayValue?
-                    var hadOneofValue = false
-                    if let current = self.valueType {
-                        hadOneofValue = true
-                        if case let .arrayValue(m) = current { v = m }
-                    }
-                    try decoder.decodeSingularMessageField(value: &v)
-                    if let v = v {
-                        if hadOneofValue { try decoder.handleConflictingOneOf() }
-                        self.valueType = .arrayValue(v)
-                    }
-                }()
-            case 10: try {
-                    var v: Mongorpc_Timestamp?
-                    var hadOneofValue = false
-                    if let current = self.valueType {
-                        hadOneofValue = true
-                        if case let .timestampValue(m) = current { v = m }
-                    }
-                    try decoder.decodeSingularMessageField(value: &v)
-                    if let v = v {
-                        if hadOneofValue { try decoder.handleConflictingOneOf() }
-                        self.valueType = .timestampValue(v)
-                    }
-                }()
-            case 11: try {
-                    var v: Mongorpc_NullValue?
-                    try decoder.decodeSingularEnumField(value: &v)
-                    if let v = v {
-                        if self.valueType != nil { try decoder.handleConflictingOneOf() }
-                        self.valueType = .nullValue(v)
-                    }
-                }()
-            case 17: try {
-                    var v: String?
-                    try decoder.decodeSingularStringField(value: &v)
-                    if let v = v {
-                        if self.valueType != nil { try decoder.handleConflictingOneOf() }
-                        self.valueType = .stringValue(v)
-                    }
-                }()
-            case 18: try {
-                    var v: Data?
-                    try decoder.decodeSingularBytesField(value: &v)
-                    if let v = v {
-                        if self.valueType != nil { try decoder.handleConflictingOneOf() }
-                        self.valueType = .bytesValue(v)
-                    }
-                }()
-            default: break
-            }
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try {
+        var v: Double?
+        try decoder.decodeSingularDoubleField(value: &v)
+        if let v = v {
+          if self.type != nil {try decoder.handleConflictingOneOf()}
+          self.type = .doubleValue(v)
         }
-    }
-
-    func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-        // The use of inline closures is to circumvent an issue where the compiler
-        // allocates stack space for every if/case branch local when no optimizations
-        // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-        // https://github.com/apple/swift-protobuf/issues/1182
-        switch valueType {
-        case .booleanValue?: try {
-                guard case let .booleanValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularBoolField(value: v, fieldNumber: 1)
-            }()
-        case .integerValue?: try {
-                guard case let .integerValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularInt64Field(value: v, fieldNumber: 2)
-            }()
-        case .doubleValue?: try {
-                guard case let .doubleValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularDoubleField(value: v, fieldNumber: 3)
-            }()
-        case .mapValue?: try {
-                guard case let .mapValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
-            }()
-        case .geoPointValue?: try {
-                guard case let .geoPointValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularMessageField(value: v, fieldNumber: 8)
-            }()
-        case .arrayValue?: try {
-                guard case let .arrayValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularMessageField(value: v, fieldNumber: 9)
-            }()
-        case .timestampValue?: try {
-                guard case let .timestampValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularMessageField(value: v, fieldNumber: 10)
-            }()
-        case .nullValue?: try {
-                guard case let .nullValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularEnumField(value: v, fieldNumber: 11)
-            }()
-        case .stringValue?: try {
-                guard case let .stringValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularStringField(value: v, fieldNumber: 17)
-            }()
-        case .bytesValue?: try {
-                guard case let .bytesValue(v)? = self.valueType else { preconditionFailure() }
-                try visitor.visitSingularBytesField(value: v, fieldNumber: 18)
-            }()
-        case nil: break
+      }()
+      case 2: try {
+        var v: String?
+        try decoder.decodeSingularStringField(value: &v)
+        if let v = v {
+          if self.type != nil {try decoder.handleConflictingOneOf()}
+          self.type = .stringValue(v)
         }
-        try unknownFields.traverse(visitor: &visitor)
+      }()
+      case 3: try {
+        var v: Mongorpc_Map?
+        var hadOneofValue = false
+        if let current = self.type {
+          hadOneofValue = true
+          if case .mapValue(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.type = .mapValue(v)
+        }
+      }()
+      case 4: try {
+        var v: Mongorpc_Array?
+        var hadOneofValue = false
+        if let current = self.type {
+          hadOneofValue = true
+          if case .arrayValue(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.type = .arrayValue(v)
+        }
+      }()
+      case 5: try {
+        var v: Data?
+        try decoder.decodeSingularBytesField(value: &v)
+        if let v = v {
+          if self.type != nil {try decoder.handleConflictingOneOf()}
+          self.type = .bytesValue(v)
+        }
+      }()
+      case 8: try {
+        var v: Bool?
+        try decoder.decodeSingularBoolField(value: &v)
+        if let v = v {
+          if self.type != nil {try decoder.handleConflictingOneOf()}
+          self.type = .boolValue(v)
+        }
+      }()
+      case 9: try {
+        var v: Mongorpc_Timestamp?
+        var hadOneofValue = false
+        if let current = self.type {
+          hadOneofValue = true
+          if case .dateValue(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.type = .dateValue(v)
+        }
+      }()
+      case 10: try {
+        var v: Mongorpc_Null?
+        try decoder.decodeSingularEnumField(value: &v)
+        if let v = v {
+          if self.type != nil {try decoder.handleConflictingOneOf()}
+          self.type = .nullValue(v)
+        }
+      }()
+      case 23: try {
+        var v: Int64?
+        try decoder.decodeSingularInt64Field(value: &v)
+        if let v = v {
+          if self.type != nil {try decoder.handleConflictingOneOf()}
+          self.type = .integerValue(v)
+        }
+      }()
+      default: break
+      }
     }
+  }
 
-    static func == (lhs: Mongorpc_Value, rhs: Mongorpc_Value) -> Bool {
-        if lhs.valueType != rhs.valueType { return false }
-        if lhs.unknownFields != rhs.unknownFields { return false }
-        return true
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    switch self.type {
+    case .doubleValue?: try {
+      guard case .doubleValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularDoubleField(value: v, fieldNumber: 1)
+    }()
+    case .stringValue?: try {
+      guard case .stringValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
+    }()
+    case .mapValue?: try {
+      guard case .mapValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
+    }()
+    case .arrayValue?: try {
+      guard case .arrayValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    }()
+    case .bytesValue?: try {
+      guard case .bytesValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 5)
+    }()
+    case .boolValue?: try {
+      guard case .boolValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 8)
+    }()
+    case .dateValue?: try {
+      guard case .dateValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 9)
+    }()
+    case .nullValue?: try {
+      guard case .nullValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularEnumField(value: v, fieldNumber: 10)
+    }()
+    case .integerValue?: try {
+      guard case .integerValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularInt64Field(value: v, fieldNumber: 23)
+    }()
+    case nil: break
     }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_Value, rhs: Mongorpc_Value) -> Bool {
+    if lhs.type != rhs.type {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
 }
 
 extension Mongorpc_ListCollectionsRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-    static let protoMessageName: String = _protobuf_package + ".ListCollectionsRequest"
-    static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-        1: .same(proto: "database"),
-    ]
+  static let protoMessageName: String = _protobuf_package + ".ListCollectionsRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "database"),
+  ]
 
-    mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-        while let fieldNumber = try decoder.nextFieldNumber() {
-            // The use of inline closures is to circumvent an issue where the compiler
-            // allocates stack space for every case branch when no optimizations are
-            // enabled. https://github.com/apple/swift-protobuf/issues/1034
-            switch fieldNumber {
-            case 1: try { try decoder.decodeSingularStringField(value: &self.database) }()
-            default: break
-            }
-        }
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.database) }()
+      default: break
+      }
     }
+  }
 
-    func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-        if !database.isEmpty {
-            try visitor.visitSingularStringField(value: database, fieldNumber: 1)
-        }
-        try unknownFields.traverse(visitor: &visitor)
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.database.isEmpty {
+      try visitor.visitSingularStringField(value: self.database, fieldNumber: 1)
     }
+    try unknownFields.traverse(visitor: &visitor)
+  }
 
-    static func == (lhs: Mongorpc_ListCollectionsRequest, rhs: Mongorpc_ListCollectionsRequest) -> Bool {
-        if lhs.database != rhs.database { return false }
-        if lhs.unknownFields != rhs.unknownFields { return false }
-        return true
-    }
+  static func ==(lhs: Mongorpc_ListCollectionsRequest, rhs: Mongorpc_ListCollectionsRequest) -> Bool {
+    if lhs.database != rhs.database {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
 }
 
 extension Mongorpc_ListCollectionsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-    static let protoMessageName: String = _protobuf_package + ".ListCollectionsResponse"
-    static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-        1: .same(proto: "fields"),
-    ]
+  static let protoMessageName: String = _protobuf_package + ".ListCollectionsResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "collections"),
+  ]
 
-    mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-        while let fieldNumber = try decoder.nextFieldNumber() {
-            // The use of inline closures is to circumvent an issue where the compiler
-            // allocates stack space for every case branch when no optimizations are
-            // enabled. https://github.com/apple/swift-protobuf/issues/1034
-            switch fieldNumber {
-            case 1: try { try decoder.decodeMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString, Mongorpc_Value>.self, value: &self.fields) }()
-            default: break
-            }
-        }
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._collections) }()
+      default: break
+      }
     }
+  }
 
-    func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-        if !fields.isEmpty {
-            try visitor.visitMapField(fieldType: SwiftProtobuf._ProtobufMessageMap<SwiftProtobuf.ProtobufString, Mongorpc_Value>.self, value: fields, fieldNumber: 1)
-        }
-        try unknownFields.traverse(visitor: &visitor)
-    }
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._collections {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
 
-    static func == (lhs: Mongorpc_ListCollectionsResponse, rhs: Mongorpc_ListCollectionsResponse) -> Bool {
-        if lhs.fields != rhs.fields { return false }
-        if lhs.unknownFields != rhs.unknownFields { return false }
-        return true
+  static func ==(lhs: Mongorpc_ListCollectionsResponse, rhs: Mongorpc_ListCollectionsResponse) -> Bool {
+    if lhs._collections != rhs._collections {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_GetDocumentRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetDocumentRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "database"),
+    2: .same(proto: "collection"),
+    3: .standard(proto: "document_id"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.database) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.collection) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.documentID) }()
+      default: break
+      }
     }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.database.isEmpty {
+      try visitor.visitSingularStringField(value: self.database, fieldNumber: 1)
+    }
+    if !self.collection.isEmpty {
+      try visitor.visitSingularStringField(value: self.collection, fieldNumber: 2)
+    }
+    if !self.documentID.isEmpty {
+      try visitor.visitSingularStringField(value: self.documentID, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_GetDocumentRequest, rhs: Mongorpc_GetDocumentRequest) -> Bool {
+    if lhs.database != rhs.database {return false}
+    if lhs.collection != rhs.collection {return false}
+    if lhs.documentID != rhs.documentID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_GetDocumentResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetDocumentResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "document"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._document) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._document {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_GetDocumentResponse, rhs: Mongorpc_GetDocumentResponse) -> Bool {
+    if lhs._document != rhs._document {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_ListDocumentsRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ListDocumentsRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "database"),
+    2: .same(proto: "collection"),
+    3: .same(proto: "limit"),
+    4: .same(proto: "skip"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.database) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.collection) }()
+      case 3: try { try decoder.decodeSingularInt32Field(value: &self.limit) }()
+      case 4: try { try decoder.decodeSingularInt32Field(value: &self.skip) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.database.isEmpty {
+      try visitor.visitSingularStringField(value: self.database, fieldNumber: 1)
+    }
+    if !self.collection.isEmpty {
+      try visitor.visitSingularStringField(value: self.collection, fieldNumber: 2)
+    }
+    if self.limit != 0 {
+      try visitor.visitSingularInt32Field(value: self.limit, fieldNumber: 3)
+    }
+    if self.skip != 0 {
+      try visitor.visitSingularInt32Field(value: self.skip, fieldNumber: 4)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_ListDocumentsRequest, rhs: Mongorpc_ListDocumentsRequest) -> Bool {
+    if lhs.database != rhs.database {return false}
+    if lhs.collection != rhs.collection {return false}
+    if lhs.limit != rhs.limit {return false}
+    if lhs.skip != rhs.skip {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_ListDocumentsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ListDocumentsResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "documents"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._documents) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._documents {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_ListDocumentsResponse, rhs: Mongorpc_ListDocumentsResponse) -> Bool {
+    if lhs._documents != rhs._documents {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_CreateDocumentRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateDocumentRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "database"),
+    2: .same(proto: "collection"),
+    3: .same(proto: "document"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.database) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.collection) }()
+      case 3: try { try decoder.decodeSingularMessageField(value: &self._document) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if !self.database.isEmpty {
+      try visitor.visitSingularStringField(value: self.database, fieldNumber: 1)
+    }
+    if !self.collection.isEmpty {
+      try visitor.visitSingularStringField(value: self.collection, fieldNumber: 2)
+    }
+    try { if let v = self._document {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_CreateDocumentRequest, rhs: Mongorpc_CreateDocumentRequest) -> Bool {
+    if lhs.database != rhs.database {return false}
+    if lhs.collection != rhs.collection {return false}
+    if lhs._document != rhs._document {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_CreateDocumentResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateDocumentResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "document_id"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.documentID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.documentID.isEmpty {
+      try visitor.visitSingularStringField(value: self.documentID, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_CreateDocumentResponse, rhs: Mongorpc_CreateDocumentResponse) -> Bool {
+    if lhs.documentID != rhs.documentID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_UpdateDocumentRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".UpdateDocumentRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "database"),
+    2: .same(proto: "collection"),
+    3: .standard(proto: "document_id"),
+    4: .same(proto: "document"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.database) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.collection) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.documentID) }()
+      case 4: try { try decoder.decodeSingularMessageField(value: &self._document) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if !self.database.isEmpty {
+      try visitor.visitSingularStringField(value: self.database, fieldNumber: 1)
+    }
+    if !self.collection.isEmpty {
+      try visitor.visitSingularStringField(value: self.collection, fieldNumber: 2)
+    }
+    if !self.documentID.isEmpty {
+      try visitor.visitSingularStringField(value: self.documentID, fieldNumber: 3)
+    }
+    try { if let v = self._document {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_UpdateDocumentRequest, rhs: Mongorpc_UpdateDocumentRequest) -> Bool {
+    if lhs.database != rhs.database {return false}
+    if lhs.collection != rhs.collection {return false}
+    if lhs.documentID != rhs.documentID {return false}
+    if lhs._document != rhs._document {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_UpdateDocumentResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".UpdateDocumentResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "document_id"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.documentID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.documentID.isEmpty {
+      try visitor.visitSingularStringField(value: self.documentID, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_UpdateDocumentResponse, rhs: Mongorpc_UpdateDocumentResponse) -> Bool {
+    if lhs.documentID != rhs.documentID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_DeleteDocumentRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".DeleteDocumentRequest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "database"),
+    2: .same(proto: "collection"),
+    3: .standard(proto: "document_id"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.database) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.collection) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.documentID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.database.isEmpty {
+      try visitor.visitSingularStringField(value: self.database, fieldNumber: 1)
+    }
+    if !self.collection.isEmpty {
+      try visitor.visitSingularStringField(value: self.collection, fieldNumber: 2)
+    }
+    if !self.documentID.isEmpty {
+      try visitor.visitSingularStringField(value: self.documentID, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_DeleteDocumentRequest, rhs: Mongorpc_DeleteDocumentRequest) -> Bool {
+    if lhs.database != rhs.database {return false}
+    if lhs.collection != rhs.collection {return false}
+    if lhs.documentID != rhs.documentID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Mongorpc_DeleteDocumentResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".DeleteDocumentResponse"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "DeletedCount"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularInt64Field(value: &self.deletedCount) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.deletedCount != 0 {
+      try visitor.visitSingularInt64Field(value: self.deletedCount, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_DeleteDocumentResponse, rhs: Mongorpc_DeleteDocumentResponse) -> Bool {
+    if lhs.deletedCount != rhs.deletedCount {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
 }

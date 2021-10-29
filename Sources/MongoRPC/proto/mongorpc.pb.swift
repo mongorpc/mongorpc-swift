@@ -35,25 +35,25 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
 }
 
 /// Null is a special type that is used to represent a null value in a MongoDB
-enum Mongorpc_Null: SwiftProtobuf.Enum {
+enum Mongorpc_NullValue: SwiftProtobuf.Enum {
   typealias RawValue = Int
-  case value // = 0
+  case nullValue // = 0
   case UNRECOGNIZED(Int)
 
   init() {
-    self = .value
+    self = .nullValue
   }
 
   init?(rawValue: Int) {
     switch rawValue {
-    case 0: self = .value
+    case 0: self = .nullValue
     default: self = .UNRECOGNIZED(rawValue)
     }
   }
 
   var rawValue: Int {
     switch self {
-    case .value: return 0
+    case .nullValue: return 0
     case .UNRECOGNIZED(let i): return i
     }
   }
@@ -62,17 +62,17 @@ enum Mongorpc_Null: SwiftProtobuf.Enum {
 
 #if swift(>=4.2)
 
-extension Mongorpc_Null: CaseIterable {
+extension Mongorpc_NullValue: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static var allCases: [Mongorpc_Null] = [
-    .value,
+  static var allCases: [Mongorpc_NullValue] = [
+    .nullValue,
   ]
 }
 
 #endif  // swift(>=4.2)
 
 /// Array is a special type that is used to represent an array value in a MongoDB
-struct Mongorpc_Array {
+struct Mongorpc_ArrayValue {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -85,7 +85,7 @@ struct Mongorpc_Array {
 }
 
 /// Map is a special type that is used to represent a map value in a MongoDB
-struct Mongorpc_Map {
+struct Mongorpc_MapValue {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -106,6 +106,18 @@ struct Mongorpc_Timestamp {
   var seconds: Int64 = 0
 
   var nanos: Int32 = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Mongorpc_ObjectID {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var id: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -139,19 +151,19 @@ struct Mongorpc_Value {
   }
 
   /// Map represents a map value in a MongoDB
-  var mapValue: Mongorpc_Map {
+  var mapValue: Mongorpc_MapValue {
     get {
       if case .mapValue(let v)? = type {return v}
-      return Mongorpc_Map()
+      return Mongorpc_MapValue()
     }
     set {type = .mapValue(newValue)}
   }
 
   /// Array represents an array value in a MongoDB
-  var arrayValue: Mongorpc_Array {
+  var arrayValue: Mongorpc_ArrayValue {
     get {
       if case .arrayValue(let v)? = type {return v}
-      return Mongorpc_Array()
+      return Mongorpc_ArrayValue()
     }
     set {type = .arrayValue(newValue)}
   }
@@ -184,10 +196,10 @@ struct Mongorpc_Value {
   }
 
   /// Null represents a null value in a MongoDB
-  var nullValue: Mongorpc_Null {
+  var nullValue: Mongorpc_NullValue {
     get {
       if case .nullValue(let v)? = type {return v}
-      return .value
+      return .nullValue
     }
     set {type = .nullValue(newValue)}
   }
@@ -201,6 +213,15 @@ struct Mongorpc_Value {
     set {type = .integerValue(newValue)}
   }
 
+  ///undefined = 6;
+  var objectIDValue: Mongorpc_ObjectID {
+    get {
+      if case .objectIDValue(let v)? = type {return v}
+      return Mongorpc_ObjectID()
+    }
+    set {type = .objectIDValue(newValue)}
+  }
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Type: Equatable {
@@ -209,9 +230,9 @@ struct Mongorpc_Value {
     /// string represents a string value in a MongoDB
     case stringValue(String)
     /// Map represents a map value in a MongoDB
-    case mapValue(Mongorpc_Map)
+    case mapValue(Mongorpc_MapValue)
     /// Array represents an array value in a MongoDB
-    case arrayValue(Mongorpc_Array)
+    case arrayValue(Mongorpc_ArrayValue)
     /// Bytes represents a bytes value in a MongoDB
     case bytesValue(Data)
     /// Boolean represents a boolean value in a MongoDB
@@ -219,9 +240,11 @@ struct Mongorpc_Value {
     /// Timestamp represents a timestamp value in a MongoDB
     case dateValue(Mongorpc_Timestamp)
     /// Null represents a null value in a MongoDB
-    case nullValue(Mongorpc_Null)
+    case nullValue(Mongorpc_NullValue)
     /// integer represents an integer value in a MongoDB
     case integerValue(Int64)
+    ///undefined = 6;
+    case objectIDValue(Mongorpc_ObjectID)
 
   #if !swift(>=4.1)
     static func ==(lhs: Mongorpc_Value.OneOf_Type, rhs: Mongorpc_Value.OneOf_Type) -> Bool {
@@ -265,6 +288,10 @@ struct Mongorpc_Value {
         guard case .integerValue(let l) = lhs, case .integerValue(let r) = rhs else { preconditionFailure() }
         return l == r
       }()
+      case (.objectIDValue, .objectIDValue): return {
+        guard case .objectIDValue(let l) = lhs, case .objectIDValue(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
       default: return false
       }
     }
@@ -295,8 +322,8 @@ struct Mongorpc_ListCollectionsResponse {
   // methods supported on all messages.
 
   /// Array of collection names
-  var collections: Mongorpc_Array {
-    get {return _collections ?? Mongorpc_Array()}
+  var collections: Mongorpc_ArrayValue {
+    get {return _collections ?? Mongorpc_ArrayValue()}
     set {_collections = newValue}
   }
   /// Returns true if `collections` has been explicitly set.
@@ -308,7 +335,7 @@ struct Mongorpc_ListCollectionsResponse {
 
   init() {}
 
-  fileprivate var _collections: Mongorpc_Array? = nil
+  fileprivate var _collections: Mongorpc_ArrayValue? = nil
 }
 
 /// GetCollectionRequest is a special type that is used to represent a get collection request in a MongoDB
@@ -384,8 +411,8 @@ struct Mongorpc_ListDocumentsResponse {
   // methods supported on all messages.
 
   /// Array of documents
-  var documents: Mongorpc_Array {
-    get {return _documents ?? Mongorpc_Array()}
+  var documents: Mongorpc_ArrayValue {
+    get {return _documents ?? Mongorpc_ArrayValue()}
     set {_documents = newValue}
   }
   /// Returns true if `documents` has been explicitly set.
@@ -397,7 +424,7 @@ struct Mongorpc_ListDocumentsResponse {
 
   init() {}
 
-  fileprivate var _documents: Mongorpc_Array? = nil
+  fileprivate var _documents: Mongorpc_ArrayValue? = nil
 }
 
 /// InsertDocumentRequest is a special type that is used to represent a insert document request in a MongoDB
@@ -481,12 +508,26 @@ struct Mongorpc_UpdateDocumentResponse {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  /// Document ID of the updated document
-  var documentID: String = String()
+  var matchedCount: Int64 = 0
+
+  var modifiedCount: Int64 = 0
+
+  var upsertedCount: Int64 = 0
+
+  var upsertedID: Mongorpc_Value {
+    get {return _upsertedID ?? Mongorpc_Value()}
+    set {_upsertedID = newValue}
+  }
+  /// Returns true if `upsertedID` has been explicitly set.
+  var hasUpsertedID: Bool {return self._upsertedID != nil}
+  /// Clears the value of `upsertedID`. Subsequent reads from it will return its default value.
+  mutating func clearUpsertedID() {self._upsertedID = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
+
+  fileprivate var _upsertedID: Mongorpc_Value? = nil
 }
 
 /// DeleteDocumentRequest is a special type that is used to represent a delete document request in a MongoDB
@@ -527,14 +568,14 @@ struct Mongorpc_DeleteDocumentResponse {
 
 fileprivate let _protobuf_package = "mongorpc"
 
-extension Mongorpc_Null: SwiftProtobuf._ProtoNameProviding {
+extension Mongorpc_NullValue: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "NULL_VALUE"),
   ]
 }
 
-extension Mongorpc_Array: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Array"
+extension Mongorpc_ArrayValue: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ArrayValue"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "values"),
   ]
@@ -558,15 +599,15 @@ extension Mongorpc_Array: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Mongorpc_Array, rhs: Mongorpc_Array) -> Bool {
+  static func ==(lhs: Mongorpc_ArrayValue, rhs: Mongorpc_ArrayValue) -> Bool {
     if lhs.values != rhs.values {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Mongorpc_Map: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Map"
+extension Mongorpc_MapValue: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".MapValue"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "fields"),
   ]
@@ -590,7 +631,7 @@ extension Mongorpc_Map: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Mongorpc_Map, rhs: Mongorpc_Map) -> Bool {
+  static func ==(lhs: Mongorpc_MapValue, rhs: Mongorpc_MapValue) -> Bool {
     if lhs.fields != rhs.fields {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -635,6 +676,38 @@ extension Mongorpc_Timestamp: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
   }
 }
 
+extension Mongorpc_ObjectID: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ObjectID"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "id"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.id.isEmpty {
+      try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Mongorpc_ObjectID, rhs: Mongorpc_ObjectID) -> Bool {
+    if lhs.id != rhs.id {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Mongorpc_Value: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".Value"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -647,6 +720,7 @@ extension Mongorpc_Value: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
     9: .standard(proto: "date_value"),
     10: .standard(proto: "null_value"),
     23: .standard(proto: "integer_value"),
+    7: .standard(proto: "object_id_value"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -672,7 +746,7 @@ extension Mongorpc_Value: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
         }
       }()
       case 3: try {
-        var v: Mongorpc_Map?
+        var v: Mongorpc_MapValue?
         var hadOneofValue = false
         if let current = self.type {
           hadOneofValue = true
@@ -685,7 +759,7 @@ extension Mongorpc_Value: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
         }
       }()
       case 4: try {
-        var v: Mongorpc_Array?
+        var v: Mongorpc_ArrayValue?
         var hadOneofValue = false
         if let current = self.type {
           hadOneofValue = true
@@ -703,6 +777,19 @@ extension Mongorpc_Value: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
         if let v = v {
           if self.type != nil {try decoder.handleConflictingOneOf()}
           self.type = .bytesValue(v)
+        }
+      }()
+      case 7: try {
+        var v: Mongorpc_ObjectID?
+        var hadOneofValue = false
+        if let current = self.type {
+          hadOneofValue = true
+          if case .objectIDValue(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.type = .objectIDValue(v)
         }
       }()
       case 8: try {
@@ -727,7 +814,7 @@ extension Mongorpc_Value: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
         }
       }()
       case 10: try {
-        var v: Mongorpc_Null?
+        var v: Mongorpc_NullValue?
         try decoder.decodeSingularEnumField(value: &v)
         if let v = v {
           if self.type != nil {try decoder.handleConflictingOneOf()}
@@ -772,6 +859,10 @@ extension Mongorpc_Value: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
     case .bytesValue?: try {
       guard case .bytesValue(let v)? = self.type else { preconditionFailure() }
       try visitor.visitSingularBytesField(value: v, fieldNumber: 5)
+    }()
+    case .objectIDValue?: try {
+      guard case .objectIDValue(let v)? = self.type else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
     }()
     case .boolValue?: try {
       guard case .boolValue(let v)? = self.type else { preconditionFailure() }
@@ -1172,7 +1263,10 @@ extension Mongorpc_UpdateDocumentRequest: SwiftProtobuf.Message, SwiftProtobuf._
 extension Mongorpc_UpdateDocumentResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".UpdateDocumentResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "document_id"),
+    1: .standard(proto: "matched_count"),
+    2: .standard(proto: "modified_count"),
+    3: .standard(proto: "upserted_count"),
+    4: .standard(proto: "upserted_id"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1181,21 +1275,40 @@ extension Mongorpc_UpdateDocumentResponse: SwiftProtobuf.Message, SwiftProtobuf.
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.documentID) }()
+      case 1: try { try decoder.decodeSingularInt64Field(value: &self.matchedCount) }()
+      case 2: try { try decoder.decodeSingularInt64Field(value: &self.modifiedCount) }()
+      case 3: try { try decoder.decodeSingularInt64Field(value: &self.upsertedCount) }()
+      case 4: try { try decoder.decodeSingularMessageField(value: &self._upsertedID) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.documentID.isEmpty {
-      try visitor.visitSingularStringField(value: self.documentID, fieldNumber: 1)
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if self.matchedCount != 0 {
+      try visitor.visitSingularInt64Field(value: self.matchedCount, fieldNumber: 1)
     }
+    if self.modifiedCount != 0 {
+      try visitor.visitSingularInt64Field(value: self.modifiedCount, fieldNumber: 2)
+    }
+    if self.upsertedCount != 0 {
+      try visitor.visitSingularInt64Field(value: self.upsertedCount, fieldNumber: 3)
+    }
+    try { if let v = self._upsertedID {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Mongorpc_UpdateDocumentResponse, rhs: Mongorpc_UpdateDocumentResponse) -> Bool {
-    if lhs.documentID != rhs.documentID {return false}
+    if lhs.matchedCount != rhs.matchedCount {return false}
+    if lhs.modifiedCount != rhs.modifiedCount {return false}
+    if lhs.upsertedCount != rhs.upsertedCount {return false}
+    if lhs._upsertedID != rhs._upsertedID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

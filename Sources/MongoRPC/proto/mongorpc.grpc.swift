@@ -24,515 +24,512 @@ import GRPC
 import NIO
 import SwiftProtobuf
 
-
 /// MongoRPC
 ///
 /// Usage: instantiate `Mongorpc_MongoRPCClient`, then call methods of this protocol to make API calls.
 internal protocol Mongorpc_MongoRPCClientProtocol: GRPCClient {
-  var serviceName: String { get }
-  var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? { get }
+    var serviceName: String { get }
+    var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? { get }
 
-  func listCollections(
-    _ request: Mongorpc_ListCollectionsRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse>
+    func listCollections(
+        _ request: Mongorpc_ListCollectionsRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse>
 
-  func getDocument(
-    _ request: Mongorpc_GetDocumentRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse>
+    func getDocument(
+        _ request: Mongorpc_GetDocumentRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse>
 
-  func listDocuments(
-    _ request: Mongorpc_ListDocumentsRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse>
+    func listDocuments(
+        _ request: Mongorpc_ListDocumentsRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse>
 
-  func createDocument(
-    _ request: Mongorpc_CreateDocumentRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse>
+    func createDocument(
+        _ request: Mongorpc_CreateDocumentRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse>
 
-  func updateDocument(
-    _ request: Mongorpc_UpdateDocumentRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse>
+    func updateDocument(
+        _ request: Mongorpc_UpdateDocumentRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse>
 
-  func deleteDocument(
-    _ request: Mongorpc_DeleteDocumentRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse>
+    func deleteDocument(
+        _ request: Mongorpc_DeleteDocumentRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse>
 
-  func countDocuments(
-    _ request: Mongorpc_CountDocumentsRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_CountDocumentsRequest, Mongorpc_CountDocumentsResponse>
+    func countDocuments(
+        _ request: Mongorpc_CountDocumentsRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_CountDocumentsRequest, Mongorpc_CountDocumentsResponse>
 
-  func listen(
-    _ request: Mongorpc_ListenRequest,
-    callOptions: CallOptions?,
-    handler: @escaping (Mongorpc_ListenResponse) -> Void
-  ) -> ServerStreamingCall<Mongorpc_ListenRequest, Mongorpc_ListenResponse>
+    func listen(
+        _ request: Mongorpc_ListenRequest,
+        callOptions: CallOptions?,
+        handler: @escaping (Mongorpc_ListenResponse) -> Void
+    ) -> ServerStreamingCall<Mongorpc_ListenRequest, Mongorpc_ListenResponse>
 
-  func createIndex(
-    _ request: Mongorpc_CreateIndexRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_CreateIndexRequest, Mongorpc_CreateIndexResponse>
+    func createIndex(
+        _ request: Mongorpc_CreateIndexRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_CreateIndexRequest, Mongorpc_CreateIndexResponse>
 
-  func listIndexes(
-    _ request: Mongorpc_ListIndexesRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_ListIndexesRequest, Mongorpc_ListIndexesResponse>
+    func listIndexes(
+        _ request: Mongorpc_ListIndexesRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_ListIndexesRequest, Mongorpc_ListIndexesResponse>
 
-  func deleteIndex(
-    _ request: Mongorpc_DeleteIndexRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_DeleteIndexRequest, Mongorpc_DeleteIndexResponse>
+    func deleteIndex(
+        _ request: Mongorpc_DeleteIndexRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_DeleteIndexRequest, Mongorpc_DeleteIndexResponse>
 
-  func reindex(
-    _ request: Mongorpc_ReindexRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_ReindexRequest, Mongorpc_ReindexResponse>
+    func reindex(
+        _ request: Mongorpc_ReindexRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_ReindexRequest, Mongorpc_ReindexResponse>
 
-  func ping(
-    _ request: Mongorpc_Empty,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_Empty, Mongorpc_Empty>
+    func ping(
+        _ request: Mongorpc_Empty,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_Empty, Mongorpc_Empty>
 
-  func collectionStats(
-    _ request: Mongorpc_CollectionStatsRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_CollectionStatsRequest, Mongorpc_CollectionStatsResponse>
+    func collectionStats(
+        _ request: Mongorpc_CollectionStatsRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_CollectionStatsRequest, Mongorpc_CollectionStatsResponse>
 
-  func createCollection(
-    _ request: Mongorpc_CreateCollectionRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_CreateCollectionRequest, Mongorpc_CreateCollectionResponse>
+    func createCollection(
+        _ request: Mongorpc_CreateCollectionRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_CreateCollectionRequest, Mongorpc_CreateCollectionResponse>
 
-  func renameCollection(
-    _ request: Mongorpc_RenameCollectionRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_RenameCollectionRequest, Mongorpc_RenameCollectionResponse>
+    func renameCollection(
+        _ request: Mongorpc_RenameCollectionRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_RenameCollectionRequest, Mongorpc_RenameCollectionResponse>
 
-  func deleteCollection(
-    _ request: Mongorpc_DeleteCollectionRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_DeleteCollectionRequest, Mongorpc_DeleteCollectionResponse>
+    func deleteCollection(
+        _ request: Mongorpc_DeleteCollectionRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_DeleteCollectionRequest, Mongorpc_DeleteCollectionResponse>
 
-  func healthCheck(
-    _ request: Mongorpc_HealthCheckRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_HealthCheckRequest, Mongorpc_HealthCheckResponse>
+    func healthCheck(
+        _ request: Mongorpc_HealthCheckRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_HealthCheckRequest, Mongorpc_HealthCheckResponse>
 }
 
 extension Mongorpc_MongoRPCClientProtocol {
-  internal var serviceName: String {
-    return "mongorpc.MongoRPC"
-  }
+    var serviceName: String {
+        return "mongorpc.MongoRPC"
+    }
 
-  /// ListCollections lists the collections in a database.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to ListCollections.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func listCollections(
-    _ request: Mongorpc_ListCollectionsRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/ListCollections",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeListCollectionsInterceptors() ?? []
-    )
-  }
+    /// ListCollections lists the collections in a database.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to ListCollections.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func listCollections(
+        _ request: Mongorpc_ListCollectionsRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/ListCollections",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeListCollectionsInterceptors() ?? []
+        )
+    }
 
-  /// GetDocument gets a document from a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to GetDocument.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func getDocument(
-    _ request: Mongorpc_GetDocumentRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/GetDocument",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeGetDocumentInterceptors() ?? []
-    )
-  }
+    /// GetDocument gets a document from a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to GetDocument.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func getDocument(
+        _ request: Mongorpc_GetDocumentRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/GetDocument",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeGetDocumentInterceptors() ?? []
+        )
+    }
 
-  /// ListDocuments lists the documents in a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to ListDocuments.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func listDocuments(
-    _ request: Mongorpc_ListDocumentsRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/ListDocuments",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeListDocumentsInterceptors() ?? []
-    )
-  }
+    /// ListDocuments lists the documents in a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to ListDocuments.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func listDocuments(
+        _ request: Mongorpc_ListDocumentsRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/ListDocuments",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeListDocumentsInterceptors() ?? []
+        )
+    }
 
-  /// CreateDocument creates a document in a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to CreateDocument.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func createDocument(
-    _ request: Mongorpc_CreateDocumentRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/CreateDocument",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCreateDocumentInterceptors() ?? []
-    )
-  }
+    /// CreateDocument creates a document in a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to CreateDocument.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func createDocument(
+        _ request: Mongorpc_CreateDocumentRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/CreateDocument",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeCreateDocumentInterceptors() ?? []
+        )
+    }
 
-  /// UpdateDocument updates a document in a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to UpdateDocument.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func updateDocument(
-    _ request: Mongorpc_UpdateDocumentRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/UpdateDocument",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeUpdateDocumentInterceptors() ?? []
-    )
-  }
+    /// UpdateDocument updates a document in a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to UpdateDocument.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func updateDocument(
+        _ request: Mongorpc_UpdateDocumentRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/UpdateDocument",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeUpdateDocumentInterceptors() ?? []
+        )
+    }
 
-  /// DeleteDocument deletes a document from a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to DeleteDocument.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func deleteDocument(
-    _ request: Mongorpc_DeleteDocumentRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/DeleteDocument",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeDeleteDocumentInterceptors() ?? []
-    )
-  }
+    /// DeleteDocument deletes a document from a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to DeleteDocument.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func deleteDocument(
+        _ request: Mongorpc_DeleteDocumentRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/DeleteDocument",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeDeleteDocumentInterceptors() ?? []
+        )
+    }
 
-  /// Returns the count of documents that match the query for a collection or view.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to CountDocuments.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func countDocuments(
-    _ request: Mongorpc_CountDocumentsRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_CountDocumentsRequest, Mongorpc_CountDocumentsResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/CountDocuments",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCountDocumentsInterceptors() ?? []
-    )
-  }
+    /// Returns the count of documents that match the query for a collection or view.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to CountDocuments.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func countDocuments(
+        _ request: Mongorpc_CountDocumentsRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_CountDocumentsRequest, Mongorpc_CountDocumentsResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/CountDocuments",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeCountDocumentsInterceptors() ?? []
+        )
+    }
 
-  /// Listen listens for changes to a document in a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to Listen.
-  ///   - callOptions: Call options.
-  ///   - handler: A closure called when each response is received from the server.
-  /// - Returns: A `ServerStreamingCall` with futures for the metadata and status.
-  internal func listen(
-    _ request: Mongorpc_ListenRequest,
-    callOptions: CallOptions? = nil,
-    handler: @escaping (Mongorpc_ListenResponse) -> Void
-  ) -> ServerStreamingCall<Mongorpc_ListenRequest, Mongorpc_ListenResponse> {
-    return self.makeServerStreamingCall(
-      path: "/mongorpc.MongoRPC/Listen",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeListenInterceptors() ?? [],
-      handler: handler
-    )
-  }
+    /// Listen listens for changes to a document in a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to Listen.
+    ///   - callOptions: Call options.
+    ///   - handler: A closure called when each response is received from the server.
+    /// - Returns: A `ServerStreamingCall` with futures for the metadata and status.
+    func listen(
+        _ request: Mongorpc_ListenRequest,
+        callOptions: CallOptions? = nil,
+        handler: @escaping (Mongorpc_ListenResponse) -> Void
+    ) -> ServerStreamingCall<Mongorpc_ListenRequest, Mongorpc_ListenResponse> {
+        return makeServerStreamingCall(
+            path: "/mongorpc.MongoRPC/Listen",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeListenInterceptors() ?? [],
+            handler: handler
+        )
+    }
 
-  /// Creates indexes on collections.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to CreateIndex.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func createIndex(
-    _ request: Mongorpc_CreateIndexRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_CreateIndexRequest, Mongorpc_CreateIndexResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/CreateIndex",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCreateIndexInterceptors() ?? []
-    )
-  }
+    /// Creates indexes on collections.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to CreateIndex.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func createIndex(
+        _ request: Mongorpc_CreateIndexRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_CreateIndexRequest, Mongorpc_CreateIndexResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/CreateIndex",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeCreateIndexInterceptors() ?? []
+        )
+    }
 
-  /// Lists indexes on collections.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to ListIndexes.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func listIndexes(
-    _ request: Mongorpc_ListIndexesRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_ListIndexesRequest, Mongorpc_ListIndexesResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/ListIndexes",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeListIndexesInterceptors() ?? []
-    )
-  }
+    /// Lists indexes on collections.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to ListIndexes.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func listIndexes(
+        _ request: Mongorpc_ListIndexesRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_ListIndexesRequest, Mongorpc_ListIndexesResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/ListIndexes",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeListIndexesInterceptors() ?? []
+        )
+    }
 
-  /// Deletes indexes on collections.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to DeleteIndex.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func deleteIndex(
-    _ request: Mongorpc_DeleteIndexRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_DeleteIndexRequest, Mongorpc_DeleteIndexResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/DeleteIndex",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeDeleteIndexInterceptors() ?? []
-    )
-  }
+    /// Deletes indexes on collections.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to DeleteIndex.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func deleteIndex(
+        _ request: Mongorpc_DeleteIndexRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_DeleteIndexRequest, Mongorpc_DeleteIndexResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/DeleteIndex",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeDeleteIndexInterceptors() ?? []
+        )
+    }
 
-  /// Reindexes indexes on collections.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to Reindex.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func reindex(
-    _ request: Mongorpc_ReindexRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_ReindexRequest, Mongorpc_ReindexResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/Reindex",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeReindexInterceptors() ?? []
-    )
-  }
+    /// Reindexes indexes on collections.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to Reindex.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func reindex(
+        _ request: Mongorpc_ReindexRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_ReindexRequest, Mongorpc_ReindexResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/Reindex",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeReindexInterceptors() ?? []
+        )
+    }
 
-  /// Ping is used to test the connection to the server.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to Ping.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func ping(
-    _ request: Mongorpc_Empty,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_Empty, Mongorpc_Empty> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/Ping",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makePingInterceptors() ?? []
-    )
-  }
+    /// Ping is used to test the connection to the server.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to Ping.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func ping(
+        _ request: Mongorpc_Empty,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_Empty, Mongorpc_Empty> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/Ping",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makePingInterceptors() ?? []
+        )
+    }
 
-  /// CollectionStats returns stats about a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to CollectionStats.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func collectionStats(
-    _ request: Mongorpc_CollectionStatsRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_CollectionStatsRequest, Mongorpc_CollectionStatsResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/CollectionStats",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCollectionStatsInterceptors() ?? []
-    )
-  }
+    /// CollectionStats returns stats about a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to CollectionStats.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func collectionStats(
+        _ request: Mongorpc_CollectionStatsRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_CollectionStatsRequest, Mongorpc_CollectionStatsResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/CollectionStats",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeCollectionStatsInterceptors() ?? []
+        )
+    }
 
-  /// CreateCollection creates a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to CreateCollection.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func createCollection(
-    _ request: Mongorpc_CreateCollectionRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_CreateCollectionRequest, Mongorpc_CreateCollectionResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/CreateCollection",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCreateCollectionInterceptors() ?? []
-    )
-  }
+    /// CreateCollection creates a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to CreateCollection.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func createCollection(
+        _ request: Mongorpc_CreateCollectionRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_CreateCollectionRequest, Mongorpc_CreateCollectionResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/CreateCollection",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeCreateCollectionInterceptors() ?? []
+        )
+    }
 
-  /// RenameCollection renames a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to RenameCollection.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func renameCollection(
-    _ request: Mongorpc_RenameCollectionRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_RenameCollectionRequest, Mongorpc_RenameCollectionResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/RenameCollection",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeRenameCollectionInterceptors() ?? []
-    )
-  }
+    /// RenameCollection renames a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to RenameCollection.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func renameCollection(
+        _ request: Mongorpc_RenameCollectionRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_RenameCollectionRequest, Mongorpc_RenameCollectionResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/RenameCollection",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeRenameCollectionInterceptors() ?? []
+        )
+    }
 
-  /// DeleteCollection drops a collection.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to DeleteCollection.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func deleteCollection(
-    _ request: Mongorpc_DeleteCollectionRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_DeleteCollectionRequest, Mongorpc_DeleteCollectionResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/DeleteCollection",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeDeleteCollectionInterceptors() ?? []
-    )
-  }
+    /// DeleteCollection drops a collection.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to DeleteCollection.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func deleteCollection(
+        _ request: Mongorpc_DeleteCollectionRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_DeleteCollectionRequest, Mongorpc_DeleteCollectionResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/DeleteCollection",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeDeleteCollectionInterceptors() ?? []
+        )
+    }
 
-  /// HealthCheck checks the health of the server.
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to HealthCheck.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func healthCheck(
-    _ request: Mongorpc_HealthCheckRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_HealthCheckRequest, Mongorpc_HealthCheckResponse> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/HealthCheck",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeHealthCheckInterceptors() ?? []
-    )
-  }
+    /// HealthCheck checks the health of the server.
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to HealthCheck.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func healthCheck(
+        _ request: Mongorpc_HealthCheckRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_HealthCheckRequest, Mongorpc_HealthCheckResponse> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/HealthCheck",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeHealthCheckInterceptors() ?? []
+        )
+    }
 }
 
 internal protocol Mongorpc_MongoRPCClientInterceptorFactoryProtocol {
+    /// - Returns: Interceptors to use when invoking 'listCollections'.
+    func makeListCollectionsInterceptors() -> [ClientInterceptor<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'listCollections'.
-  func makeListCollectionsInterceptors() -> [ClientInterceptor<Mongorpc_ListCollectionsRequest, Mongorpc_ListCollectionsResponse>]
+    /// - Returns: Interceptors to use when invoking 'getDocument'.
+    func makeGetDocumentInterceptors() -> [ClientInterceptor<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'getDocument'.
-  func makeGetDocumentInterceptors() -> [ClientInterceptor<Mongorpc_GetDocumentRequest, Mongorpc_GetDocumentResponse>]
+    /// - Returns: Interceptors to use when invoking 'listDocuments'.
+    func makeListDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'listDocuments'.
-  func makeListDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_ListDocumentsRequest, Mongorpc_ListDocumentsResponse>]
+    /// - Returns: Interceptors to use when invoking 'createDocument'.
+    func makeCreateDocumentInterceptors() -> [ClientInterceptor<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'createDocument'.
-  func makeCreateDocumentInterceptors() -> [ClientInterceptor<Mongorpc_CreateDocumentRequest, Mongorpc_CreateDocumentResponse>]
+    /// - Returns: Interceptors to use when invoking 'updateDocument'.
+    func makeUpdateDocumentInterceptors() -> [ClientInterceptor<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'updateDocument'.
-  func makeUpdateDocumentInterceptors() -> [ClientInterceptor<Mongorpc_UpdateDocumentRequest, Mongorpc_UpdateDocumentResponse>]
+    /// - Returns: Interceptors to use when invoking 'deleteDocument'.
+    func makeDeleteDocumentInterceptors() -> [ClientInterceptor<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'deleteDocument'.
-  func makeDeleteDocumentInterceptors() -> [ClientInterceptor<Mongorpc_DeleteDocumentRequest, Mongorpc_DeleteDocumentResponse>]
+    /// - Returns: Interceptors to use when invoking 'countDocuments'.
+    func makeCountDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_CountDocumentsRequest, Mongorpc_CountDocumentsResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'countDocuments'.
-  func makeCountDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_CountDocumentsRequest, Mongorpc_CountDocumentsResponse>]
+    /// - Returns: Interceptors to use when invoking 'listen'.
+    func makeListenInterceptors() -> [ClientInterceptor<Mongorpc_ListenRequest, Mongorpc_ListenResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'listen'.
-  func makeListenInterceptors() -> [ClientInterceptor<Mongorpc_ListenRequest, Mongorpc_ListenResponse>]
+    /// - Returns: Interceptors to use when invoking 'createIndex'.
+    func makeCreateIndexInterceptors() -> [ClientInterceptor<Mongorpc_CreateIndexRequest, Mongorpc_CreateIndexResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'createIndex'.
-  func makeCreateIndexInterceptors() -> [ClientInterceptor<Mongorpc_CreateIndexRequest, Mongorpc_CreateIndexResponse>]
+    /// - Returns: Interceptors to use when invoking 'listIndexes'.
+    func makeListIndexesInterceptors() -> [ClientInterceptor<Mongorpc_ListIndexesRequest, Mongorpc_ListIndexesResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'listIndexes'.
-  func makeListIndexesInterceptors() -> [ClientInterceptor<Mongorpc_ListIndexesRequest, Mongorpc_ListIndexesResponse>]
+    /// - Returns: Interceptors to use when invoking 'deleteIndex'.
+    func makeDeleteIndexInterceptors() -> [ClientInterceptor<Mongorpc_DeleteIndexRequest, Mongorpc_DeleteIndexResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'deleteIndex'.
-  func makeDeleteIndexInterceptors() -> [ClientInterceptor<Mongorpc_DeleteIndexRequest, Mongorpc_DeleteIndexResponse>]
+    /// - Returns: Interceptors to use when invoking 'reindex'.
+    func makeReindexInterceptors() -> [ClientInterceptor<Mongorpc_ReindexRequest, Mongorpc_ReindexResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'reindex'.
-  func makeReindexInterceptors() -> [ClientInterceptor<Mongorpc_ReindexRequest, Mongorpc_ReindexResponse>]
+    /// - Returns: Interceptors to use when invoking 'ping'.
+    func makePingInterceptors() -> [ClientInterceptor<Mongorpc_Empty, Mongorpc_Empty>]
 
-  /// - Returns: Interceptors to use when invoking 'ping'.
-  func makePingInterceptors() -> [ClientInterceptor<Mongorpc_Empty, Mongorpc_Empty>]
+    /// - Returns: Interceptors to use when invoking 'collectionStats'.
+    func makeCollectionStatsInterceptors() -> [ClientInterceptor<Mongorpc_CollectionStatsRequest, Mongorpc_CollectionStatsResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'collectionStats'.
-  func makeCollectionStatsInterceptors() -> [ClientInterceptor<Mongorpc_CollectionStatsRequest, Mongorpc_CollectionStatsResponse>]
+    /// - Returns: Interceptors to use when invoking 'createCollection'.
+    func makeCreateCollectionInterceptors() -> [ClientInterceptor<Mongorpc_CreateCollectionRequest, Mongorpc_CreateCollectionResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'createCollection'.
-  func makeCreateCollectionInterceptors() -> [ClientInterceptor<Mongorpc_CreateCollectionRequest, Mongorpc_CreateCollectionResponse>]
+    /// - Returns: Interceptors to use when invoking 'renameCollection'.
+    func makeRenameCollectionInterceptors() -> [ClientInterceptor<Mongorpc_RenameCollectionRequest, Mongorpc_RenameCollectionResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'renameCollection'.
-  func makeRenameCollectionInterceptors() -> [ClientInterceptor<Mongorpc_RenameCollectionRequest, Mongorpc_RenameCollectionResponse>]
+    /// - Returns: Interceptors to use when invoking 'deleteCollection'.
+    func makeDeleteCollectionInterceptors() -> [ClientInterceptor<Mongorpc_DeleteCollectionRequest, Mongorpc_DeleteCollectionResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'deleteCollection'.
-  func makeDeleteCollectionInterceptors() -> [ClientInterceptor<Mongorpc_DeleteCollectionRequest, Mongorpc_DeleteCollectionResponse>]
-
-  /// - Returns: Interceptors to use when invoking 'healthCheck'.
-  func makeHealthCheckInterceptors() -> [ClientInterceptor<Mongorpc_HealthCheckRequest, Mongorpc_HealthCheckResponse>]
+    /// - Returns: Interceptors to use when invoking 'healthCheck'.
+    func makeHealthCheckInterceptors() -> [ClientInterceptor<Mongorpc_HealthCheckRequest, Mongorpc_HealthCheckResponse>]
 }
 
 internal final class Mongorpc_MongoRPCClient: Mongorpc_MongoRPCClientProtocol {
-  internal let channel: GRPCChannel
-  internal var defaultCallOptions: CallOptions
-  internal var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol?
+    internal let channel: GRPCChannel
+    internal var defaultCallOptions: CallOptions
+    internal var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol?
 
-  /// Creates a client for the mongorpc.MongoRPC service.
-  ///
-  /// - Parameters:
-  ///   - channel: `GRPCChannel` to the service host.
-  ///   - defaultCallOptions: Options to use for each service call if the user doesn't provide them.
-  ///   - interceptors: A factory providing interceptors for each RPC.
-  internal init(
-    channel: GRPCChannel,
-    defaultCallOptions: CallOptions = CallOptions(),
-    interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? = nil
-  ) {
-    self.channel = channel
-    self.defaultCallOptions = defaultCallOptions
-    self.interceptors = interceptors
-  }
+    /// Creates a client for the mongorpc.MongoRPC service.
+    ///
+    /// - Parameters:
+    ///   - channel: `GRPCChannel` to the service host.
+    ///   - defaultCallOptions: Options to use for each service call if the user doesn't provide them.
+    ///   - interceptors: A factory providing interceptors for each RPC.
+    internal init(
+        channel: GRPCChannel,
+        defaultCallOptions: CallOptions = CallOptions(),
+        interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? = nil
+    ) {
+        self.channel = channel
+        self.defaultCallOptions = defaultCallOptions
+        self.interceptors = interceptors
+    }
 }
-

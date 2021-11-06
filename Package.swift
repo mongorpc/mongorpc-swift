@@ -11,7 +11,7 @@ let package = Package(
             name: "MongoRPC",
             targets: ["MongoRPC"]
         ),
-        .executable(name: "Sample", targets: ["Sample"])
+        .executable(name: "Sample", targets: ["Sample"]),
     ],
     dependencies: [
         .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.5.0"),

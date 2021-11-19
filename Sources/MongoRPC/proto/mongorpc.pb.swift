@@ -71,6 +71,63 @@ extension Mongorpc_NullValue: CaseIterable {
 
 #endif  // swift(>=4.2)
 
+/// operation types
+enum Mongorpc_OperationType: SwiftProtobuf.Enum {
+  typealias RawValue = Int
+
+  /// Insert
+  case insert // = 0
+
+  /// Update
+  case update // = 1
+
+  /// Delete
+  case delete // = 2
+
+  /// Replace
+  case replace // = 3
+  case UNRECOGNIZED(Int)
+
+  init() {
+    self = .insert
+  }
+
+  init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .insert
+    case 1: self = .update
+    case 2: self = .delete
+    case 3: self = .replace
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  var rawValue: Int {
+    switch self {
+    case .insert: return 0
+    case .update: return 1
+    case .delete: return 2
+    case .replace: return 3
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+}
+
+#if swift(>=4.2)
+
+extension Mongorpc_OperationType: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  static var allCases: [Mongorpc_OperationType] = [
+    .insert,
+    .update,
+    .delete,
+    .replace,
+  ]
+}
+
+#endif  // swift(>=4.2)
+
 enum Mongorpc_IndexDirection: SwiftProtobuf.Enum {
   typealias RawValue = Int
   case ascending // = 0
@@ -1015,26 +1072,21 @@ struct Mongorpc_ListenRequest {
   /// The collection to listen to
   var collection: String = String()
 
-  /// The document to listen to
-  /// string document_id = 3;
   /// The operation to listen to
-  var operation: String = String()
-
-  /// The filter to apply to the query
-  var filter: [Mongorpc_Filter] = []
-
-  /// The sort to apply to the query
-  var sort: [Mongorpc_Sort] = []
-
-  /// The limit to apply to the query
-  var limit: Int32 = 0
-
-  /// The skip to apply to the query
-  var skip: Int32 = 0
+  var operationType: Mongorpc_OperationType {
+    get {return _operationType ?? .insert}
+    set {_operationType = newValue}
+  }
+  /// Returns true if `operationType` has been explicitly set.
+  var hasOperationType: Bool {return self._operationType != nil}
+  /// Clears the value of `operationType`. Subsequent reads from it will return its default value.
+  mutating func clearOperationType() {self._operationType = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
+
+  fileprivate var _operationType: Mongorpc_OperationType? = nil
 }
 
 struct Mongorpc_ListenResponse {
@@ -1511,6 +1563,15 @@ fileprivate let _protobuf_package = "mongorpc"
 extension Mongorpc_NullValue: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "NULL_VALUE"),
+  ]
+}
+
+extension Mongorpc_OperationType: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "INSERT"),
+    1: .same(proto: "UPDATE"),
+    2: .same(proto: "DELETE"),
+    3: .same(proto: "REPLACE"),
   ]
 }
 
@@ -2998,11 +3059,7 @@ extension Mongorpc_ListenRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageI
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "database"),
     2: .same(proto: "collection"),
-    4: .same(proto: "operation"),
-    5: .same(proto: "filter"),
-    6: .same(proto: "sort"),
-    7: .same(proto: "limit"),
-    8: .same(proto: "skip"),
+    9: .standard(proto: "operation_type"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3013,49 +3070,33 @@ extension Mongorpc_ListenRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageI
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.database) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.collection) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self.operation) }()
-      case 5: try { try decoder.decodeRepeatedMessageField(value: &self.filter) }()
-      case 6: try { try decoder.decodeRepeatedMessageField(value: &self.sort) }()
-      case 7: try { try decoder.decodeSingularInt32Field(value: &self.limit) }()
-      case 8: try { try decoder.decodeSingularInt32Field(value: &self.skip) }()
+      case 9: try { try decoder.decodeSingularEnumField(value: &self._operationType) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.database.isEmpty {
       try visitor.visitSingularStringField(value: self.database, fieldNumber: 1)
     }
     if !self.collection.isEmpty {
       try visitor.visitSingularStringField(value: self.collection, fieldNumber: 2)
     }
-    if !self.operation.isEmpty {
-      try visitor.visitSingularStringField(value: self.operation, fieldNumber: 4)
-    }
-    if !self.filter.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.filter, fieldNumber: 5)
-    }
-    if !self.sort.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.sort, fieldNumber: 6)
-    }
-    if self.limit != 0 {
-      try visitor.visitSingularInt32Field(value: self.limit, fieldNumber: 7)
-    }
-    if self.skip != 0 {
-      try visitor.visitSingularInt32Field(value: self.skip, fieldNumber: 8)
-    }
+    try { if let v = self._operationType {
+      try visitor.visitSingularEnumField(value: v, fieldNumber: 9)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Mongorpc_ListenRequest, rhs: Mongorpc_ListenRequest) -> Bool {
     if lhs.database != rhs.database {return false}
     if lhs.collection != rhs.collection {return false}
-    if lhs.operation != rhs.operation {return false}
-    if lhs.filter != rhs.filter {return false}
-    if lhs.sort != rhs.sort {return false}
-    if lhs.limit != rhs.limit {return false}
-    if lhs.skip != rhs.skip {return false}
+    if lhs._operationType != rhs._operationType {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

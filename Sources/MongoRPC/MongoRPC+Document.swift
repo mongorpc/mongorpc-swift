@@ -20,13 +20,13 @@ public extension MongoRPC {
             var payload = Mongorpc_GetDocumentRequest()
             payload.database = database.name
             payload.collection = collection.name
-            payload.documentID = documentID
+            payload.documentID.id = documentID
 
             let request = client.getDocument(payload, callOptions: nil)
 
             do {
                 let result = try request.response.wait()
-                complition(.success(result.document))
+                complition(.success(result))
             } catch {
                 complition(.failure(error))
             }

@@ -11,10 +11,10 @@ import MongoRPC
 
 func main() {
     let group = DispatchGroup()
-    let client = MongoRPC(host: "localhost", port: 27051)
+    let client = MongoRPC(host: "localhost", port: 1203)
 
     group.enter()
-    client.database("sample_mflix").collection("movies").document(id: "573a13b0f29313caabd35231").get { result in
+    client.database("sample_mflix").collection("movies").document(id: "573a1390f29313caabcd4135").get { result in
         switch result {
         case let .success(document):
             print(document)

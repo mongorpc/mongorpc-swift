@@ -13,7 +13,7 @@ public extension MongoRPC {
             self.documentID = documentID
         }
 
-        public func get(_ complition: @escaping (Result<Any, Error>) -> Void) {
+        public func get(_ complition: @escaping (Result<Any?, Error>) -> Void) {
             let database = parent.parent
             let collection = parent
 
@@ -26,7 +26,7 @@ public extension MongoRPC {
 
             do {
                 let result = try request.response.wait()
-                complition(.success(result))
+                complition(.success(decode(value: result)))
             } catch {
                 complition(.failure(error))
             }

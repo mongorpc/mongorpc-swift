@@ -24,229 +24,226 @@ import GRPC
 import NIO
 import SwiftProtobuf
 
-
 /// MongoRPC
 ///
 /// Usage: instantiate `Mongorpc_MongoRPCClient`, then call methods of this protocol to make API calls.
 internal protocol Mongorpc_MongoRPCClientProtocol: GRPCClient {
-  var serviceName: String { get }
-  var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? { get }
+    var serviceName: String { get }
+    var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? { get }
 
-  func getDocument(
-    _ request: Mongorpc_GetDocumentRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_Value>
+    func getDocument(
+        _ request: Mongorpc_GetDocumentRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_Value>
 
-  func insertDocument(
-    _ request: Mongorpc_InsertDocumentRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_InsertDocumentRequest, Mongorpc_ObjectId>
+    func insertDocument(
+        _ request: Mongorpc_InsertDocumentRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_InsertDocumentRequest, Mongorpc_ObjectId>
 
-  func updateDocument(
-    _ request: Mongorpc_UpdateDocumentRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_Value>
+    func updateDocument(
+        _ request: Mongorpc_UpdateDocumentRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_Value>
 
-  func deleteDocument(
-    _ request: Mongorpc_DeleteDocumentRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_Value>
+    func deleteDocument(
+        _ request: Mongorpc_DeleteDocumentRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_Value>
 
-  func bulkInsertDocuments(
-    _ request: Mongorpc_BulkInsertDocumentsRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_BulkInsertDocumentsRequest, Mongorpc_Value>
+    func bulkInsertDocuments(
+        _ request: Mongorpc_BulkInsertDocumentsRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_BulkInsertDocumentsRequest, Mongorpc_Value>
 
-  func queryDocuments(
-    _ request: Mongorpc_QueryDocumentsRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<Mongorpc_QueryDocumentsRequest, Mongorpc_Value>
+    func queryDocuments(
+        _ request: Mongorpc_QueryDocumentsRequest,
+        callOptions: CallOptions?
+    ) -> UnaryCall<Mongorpc_QueryDocumentsRequest, Mongorpc_Value>
 
-  func listen(
-    _ request: Mongorpc_ListenRequest,
-    callOptions: CallOptions?,
-    handler: @escaping (Mongorpc_ListenResponse) -> Void
-  ) -> ServerStreamingCall<Mongorpc_ListenRequest, Mongorpc_ListenResponse>
+    func listen(
+        _ request: Mongorpc_ListenRequest,
+        callOptions: CallOptions?,
+        handler: @escaping (Mongorpc_ListenResponse) -> Void
+    ) -> ServerStreamingCall<Mongorpc_ListenRequest, Mongorpc_ListenResponse>
 }
 
 extension Mongorpc_MongoRPCClientProtocol {
-  internal var serviceName: String {
-    return "mongorpc.MongoRPC"
-  }
+    var serviceName: String {
+        return "mongorpc.MongoRPC"
+    }
 
-  /// Unary call to GetDocument
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to GetDocument.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func getDocument(
-    _ request: Mongorpc_GetDocumentRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_Value> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/GetDocument",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeGetDocumentInterceptors() ?? []
-    )
-  }
+    /// Unary call to GetDocument
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to GetDocument.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func getDocument(
+        _ request: Mongorpc_GetDocumentRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_GetDocumentRequest, Mongorpc_Value> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/GetDocument",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeGetDocumentInterceptors() ?? []
+        )
+    }
 
-  /// Unary call to InsertDocument
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to InsertDocument.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func insertDocument(
-    _ request: Mongorpc_InsertDocumentRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_InsertDocumentRequest, Mongorpc_ObjectId> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/InsertDocument",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeInsertDocumentInterceptors() ?? []
-    )
-  }
+    /// Unary call to InsertDocument
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to InsertDocument.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func insertDocument(
+        _ request: Mongorpc_InsertDocumentRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_InsertDocumentRequest, Mongorpc_ObjectId> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/InsertDocument",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeInsertDocumentInterceptors() ?? []
+        )
+    }
 
-  /// Unary call to UpdateDocument
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to UpdateDocument.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func updateDocument(
-    _ request: Mongorpc_UpdateDocumentRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_Value> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/UpdateDocument",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeUpdateDocumentInterceptors() ?? []
-    )
-  }
+    /// Unary call to UpdateDocument
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to UpdateDocument.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func updateDocument(
+        _ request: Mongorpc_UpdateDocumentRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_UpdateDocumentRequest, Mongorpc_Value> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/UpdateDocument",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeUpdateDocumentInterceptors() ?? []
+        )
+    }
 
-  /// Unary call to DeleteDocument
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to DeleteDocument.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func deleteDocument(
-    _ request: Mongorpc_DeleteDocumentRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_Value> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/DeleteDocument",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeDeleteDocumentInterceptors() ?? []
-    )
-  }
+    /// Unary call to DeleteDocument
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to DeleteDocument.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func deleteDocument(
+        _ request: Mongorpc_DeleteDocumentRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_DeleteDocumentRequest, Mongorpc_Value> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/DeleteDocument",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeDeleteDocumentInterceptors() ?? []
+        )
+    }
 
-  /// Unary call to BulkInsertDocuments
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to BulkInsertDocuments.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func bulkInsertDocuments(
-    _ request: Mongorpc_BulkInsertDocumentsRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_BulkInsertDocumentsRequest, Mongorpc_Value> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/BulkInsertDocuments",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeBulkInsertDocumentsInterceptors() ?? []
-    )
-  }
+    /// Unary call to BulkInsertDocuments
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to BulkInsertDocuments.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func bulkInsertDocuments(
+        _ request: Mongorpc_BulkInsertDocumentsRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_BulkInsertDocumentsRequest, Mongorpc_Value> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/BulkInsertDocuments",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeBulkInsertDocumentsInterceptors() ?? []
+        )
+    }
 
-  /// Unary call to QueryDocuments
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to QueryDocuments.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func queryDocuments(
-    _ request: Mongorpc_QueryDocumentsRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<Mongorpc_QueryDocumentsRequest, Mongorpc_Value> {
-    return self.makeUnaryCall(
-      path: "/mongorpc.MongoRPC/QueryDocuments",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeQueryDocumentsInterceptors() ?? []
-    )
-  }
+    /// Unary call to QueryDocuments
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to QueryDocuments.
+    ///   - callOptions: Call options.
+    /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+    func queryDocuments(
+        _ request: Mongorpc_QueryDocumentsRequest,
+        callOptions: CallOptions? = nil
+    ) -> UnaryCall<Mongorpc_QueryDocumentsRequest, Mongorpc_Value> {
+        return makeUnaryCall(
+            path: "/mongorpc.MongoRPC/QueryDocuments",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeQueryDocumentsInterceptors() ?? []
+        )
+    }
 
-  /// Server streaming call to Listen
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to Listen.
-  ///   - callOptions: Call options.
-  ///   - handler: A closure called when each response is received from the server.
-  /// - Returns: A `ServerStreamingCall` with futures for the metadata and status.
-  internal func listen(
-    _ request: Mongorpc_ListenRequest,
-    callOptions: CallOptions? = nil,
-    handler: @escaping (Mongorpc_ListenResponse) -> Void
-  ) -> ServerStreamingCall<Mongorpc_ListenRequest, Mongorpc_ListenResponse> {
-    return self.makeServerStreamingCall(
-      path: "/mongorpc.MongoRPC/Listen",
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeListenInterceptors() ?? [],
-      handler: handler
-    )
-  }
+    /// Server streaming call to Listen
+    ///
+    /// - Parameters:
+    ///   - request: Request to send to Listen.
+    ///   - callOptions: Call options.
+    ///   - handler: A closure called when each response is received from the server.
+    /// - Returns: A `ServerStreamingCall` with futures for the metadata and status.
+    func listen(
+        _ request: Mongorpc_ListenRequest,
+        callOptions: CallOptions? = nil,
+        handler: @escaping (Mongorpc_ListenResponse) -> Void
+    ) -> ServerStreamingCall<Mongorpc_ListenRequest, Mongorpc_ListenResponse> {
+        return makeServerStreamingCall(
+            path: "/mongorpc.MongoRPC/Listen",
+            request: request,
+            callOptions: callOptions ?? defaultCallOptions,
+            interceptors: interceptors?.makeListenInterceptors() ?? [],
+            handler: handler
+        )
+    }
 }
 
 internal protocol Mongorpc_MongoRPCClientInterceptorFactoryProtocol {
+    /// - Returns: Interceptors to use when invoking 'getDocument'.
+    func makeGetDocumentInterceptors() -> [ClientInterceptor<Mongorpc_GetDocumentRequest, Mongorpc_Value>]
 
-  /// - Returns: Interceptors to use when invoking 'getDocument'.
-  func makeGetDocumentInterceptors() -> [ClientInterceptor<Mongorpc_GetDocumentRequest, Mongorpc_Value>]
+    /// - Returns: Interceptors to use when invoking 'insertDocument'.
+    func makeInsertDocumentInterceptors() -> [ClientInterceptor<Mongorpc_InsertDocumentRequest, Mongorpc_ObjectId>]
 
-  /// - Returns: Interceptors to use when invoking 'insertDocument'.
-  func makeInsertDocumentInterceptors() -> [ClientInterceptor<Mongorpc_InsertDocumentRequest, Mongorpc_ObjectId>]
+    /// - Returns: Interceptors to use when invoking 'updateDocument'.
+    func makeUpdateDocumentInterceptors() -> [ClientInterceptor<Mongorpc_UpdateDocumentRequest, Mongorpc_Value>]
 
-  /// - Returns: Interceptors to use when invoking 'updateDocument'.
-  func makeUpdateDocumentInterceptors() -> [ClientInterceptor<Mongorpc_UpdateDocumentRequest, Mongorpc_Value>]
+    /// - Returns: Interceptors to use when invoking 'deleteDocument'.
+    func makeDeleteDocumentInterceptors() -> [ClientInterceptor<Mongorpc_DeleteDocumentRequest, Mongorpc_Value>]
 
-  /// - Returns: Interceptors to use when invoking 'deleteDocument'.
-  func makeDeleteDocumentInterceptors() -> [ClientInterceptor<Mongorpc_DeleteDocumentRequest, Mongorpc_Value>]
+    /// - Returns: Interceptors to use when invoking 'bulkInsertDocuments'.
+    func makeBulkInsertDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_BulkInsertDocumentsRequest, Mongorpc_Value>]
 
-  /// - Returns: Interceptors to use when invoking 'bulkInsertDocuments'.
-  func makeBulkInsertDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_BulkInsertDocumentsRequest, Mongorpc_Value>]
+    /// - Returns: Interceptors to use when invoking 'queryDocuments'.
+    func makeQueryDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_QueryDocumentsRequest, Mongorpc_Value>]
 
-  /// - Returns: Interceptors to use when invoking 'queryDocuments'.
-  func makeQueryDocumentsInterceptors() -> [ClientInterceptor<Mongorpc_QueryDocumentsRequest, Mongorpc_Value>]
-
-  /// - Returns: Interceptors to use when invoking 'listen'.
-  func makeListenInterceptors() -> [ClientInterceptor<Mongorpc_ListenRequest, Mongorpc_ListenResponse>]
+    /// - Returns: Interceptors to use when invoking 'listen'.
+    func makeListenInterceptors() -> [ClientInterceptor<Mongorpc_ListenRequest, Mongorpc_ListenResponse>]
 }
 
 internal final class Mongorpc_MongoRPCClient: Mongorpc_MongoRPCClientProtocol {
-  internal let channel: GRPCChannel
-  internal var defaultCallOptions: CallOptions
-  internal var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol?
+    internal let channel: GRPCChannel
+    internal var defaultCallOptions: CallOptions
+    internal var interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol?
 
-  /// Creates a client for the mongorpc.MongoRPC service.
-  ///
-  /// - Parameters:
-  ///   - channel: `GRPCChannel` to the service host.
-  ///   - defaultCallOptions: Options to use for each service call if the user doesn't provide them.
-  ///   - interceptors: A factory providing interceptors for each RPC.
-  internal init(
-    channel: GRPCChannel,
-    defaultCallOptions: CallOptions = CallOptions(),
-    interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? = nil
-  ) {
-    self.channel = channel
-    self.defaultCallOptions = defaultCallOptions
-    self.interceptors = interceptors
-  }
+    /// Creates a client for the mongorpc.MongoRPC service.
+    ///
+    /// - Parameters:
+    ///   - channel: `GRPCChannel` to the service host.
+    ///   - defaultCallOptions: Options to use for each service call if the user doesn't provide them.
+    ///   - interceptors: A factory providing interceptors for each RPC.
+    internal init(
+        channel: GRPCChannel,
+        defaultCallOptions: CallOptions = CallOptions(),
+        interceptors: Mongorpc_MongoRPCClientInterceptorFactoryProtocol? = nil
+    ) {
+        self.channel = channel
+        self.defaultCallOptions = defaultCallOptions
+        self.interceptors = interceptors
+    }
 }
-

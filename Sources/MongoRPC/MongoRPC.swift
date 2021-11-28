@@ -12,3 +12,7 @@ public class MongoRPC {
         client = Mongorpc_MongoRPCClient(channel: connection)
     }
 }
+
+public struct ObjectID {
+    var id: String
+}

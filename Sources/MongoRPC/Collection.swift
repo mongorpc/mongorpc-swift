@@ -119,4 +119,27 @@ public class Collection {
         
         _ = try await client.client.deleteMany(req, callOptions: client.callOptions)
     }
+    
+    public func aggregate(_ pipeline: [[String: Any]]) async throws -> [[String: Any]] {
+        var req = Mongorpc_V1_AggregateRequest()
+        req.pipeline = Mongorpc_V1_AggregationPipeline.with {
+            $0.database = database
+            $0.collection = name
+            $0.stages = pipeline.map { stage in
+                Mongorpc_V1_PipelineStage.with { ps in
+                    ps.raw = Mongorpc_V1_MapValue.with { mv in
+                        mv.fields = stage.mapValues { Mongorpc_V1_Value.from($0) }
+                    }
+                }
+            }
+        }
+        
+        var results: [[String: Any]] = []
+        for try await resp in client.client.aggregate(req, callOptions: client.callOptions) {
+            if resp.hasDocument {
+                results.append(resp.document.toDict())
+            }
+        }
+        return results
+    }
 }

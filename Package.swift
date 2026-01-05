@@ -34,5 +34,9 @@ let package = Package(
             name: "MongoRPCTests",
             dependencies: ["MongoRPC"]
         ),
+        .executableTarget(
+            name: "Validate",
+            dependencies: ["MongoRPC"]
+        ),
     ]
 )

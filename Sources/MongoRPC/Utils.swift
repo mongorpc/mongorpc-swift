@@ -108,7 +108,14 @@ extension Mongorpc_V1_UpdateSpec {
         if let setDict = dict["$set"] as? [String: Any] {
             ops.set = setDict.mapValues { Mongorpc_V1_Value.from($0) }
         }
-        // TODO: Other operators
+        
+        if let incDict = dict["$inc"] as? [String: Any] {
+            ops.inc = incDict.mapValues { Mongorpc_V1_Value.from($0) }
+        }
+        
+        if let unsetDict = dict["$unset"] as? [String: Any] {
+            ops.unset = Array(unsetDict.keys)
+        }
         
         spec.operators = ops
         return spec

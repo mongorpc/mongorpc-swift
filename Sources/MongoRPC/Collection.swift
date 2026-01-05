@@ -41,6 +41,16 @@ public class Collection {
         return response.documents.map { $0.toDict() }
     }
     
+    public func countDocuments(_ filter: [String: Any]) async throws -> Int {
+        var req = Mongorpc_V1_CountDocumentsRequest()
+        req.database = database
+        req.collection = name
+        req.filter = Mongorpc_V1_Filter.from(filter)
+        
+        let response = try await client.client.countDocuments(req, callOptions: client.callOptions)
+        return Int(response.count)
+    }
+    
     public func findOne(_ filter: [String: Any]) async throws -> [String: Any]? {
         let docs = try await find(filter, limit: 1)
         return docs.first
@@ -141,5 +151,68 @@ public class Collection {
             }
         }
         return results
+    }
+
+    public struct SendableDocument: @unchecked Sendable {
+        public let value: [String: Any]
+    }
+
+    public func watch(pipeline: [[String: Any]] = []) -> AsyncThrowingStream<SendableDocument, Error> {
+        let dbName = self.database
+        let collName = self.name
+        let grpcClient = self.client.client
+        let callOptions = self.client.callOptions
+        
+        // Convert pipeline synchronously before Task to avoid capturing non-Sendable [[String: Any]]
+        let pbPipeline = pipeline.map { stage in
+            Mongorpc_V1_PipelineStage.with { ps in
+                ps.raw = Mongorpc_V1_MapValue.with { mv in
+                    mv.fields = stage.mapValues { Mongorpc_V1_Value.from($0) }
+                }
+            }
+        }
+        
+        return AsyncThrowingStream { continuation in
+            Task {
+                var req = Mongorpc_V1_WatchRequest()
+                req.database = dbName
+                req.collection = collName
+                req.pipeline = pbPipeline
+                
+                do {
+                    for try await resp in grpcClient.watch(req, callOptions: callOptions) {
+                        if resp.hasEvent {
+                            var event: [String: Any] = [:]
+                            
+                            switch resp.event.operationType {
+                            case .insert: event["operationType"] = "insert"
+                            case .update: event["operationType"] = "update"
+                            case .replace: event["operationType"] = "replace"
+                            case .delete: event["operationType"] = "delete"
+                            case .drop: event["operationType"] = "drop"
+                            case .rename: event["operationType"] = "rename"
+                            case .dropDatabase: event["operationType"] = "dropDatabase"
+                            case .invalidate: event["operationType"] = "invalidate"
+                            default: event["operationType"] = "unknown"
+                            }
+                            
+                            if resp.event.hasDocumentKey {
+                                event["documentKey"] = ["_id": resp.event.documentKey.hex]
+                                event["_id"] = ["_id": resp.event.documentKey.hex]
+                            }
+                            if resp.event.hasFullDocument {
+                                event["fullDocument"] = resp.event.fullDocument.toDict()
+                            }
+                            event["ns"] = ["db": resp.event.database, "coll": resp.event.collection]
+                            
+                            continuation.yield(SendableDocument(value: event))
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+        }
     }
 }

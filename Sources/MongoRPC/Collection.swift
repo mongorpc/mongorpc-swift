@@ -359,3 +359,146 @@ public struct DocumentSnapshot: @unchecked Sendable {
         self.exists = exists
     }
 }
+
+/// Represents the current state of a query result.
+public struct QuerySnapshot: @unchecked Sendable {
+    /// Documents currently matching the query.
+    public let documents: [[String: Any]]
+    
+    /// Number of documents in the result.
+    public var count: Int { documents.count }
+    
+    public init(documents: [[String: Any]]) {
+        self.documents = documents
+    }
+}
+
+extension Collection {
+    /// Streams real-time updates for a filtered query.
+    ///
+    /// First emits the initial matching documents, then emits updates
+    /// whenever documents enter or leave the result set.
+    ///
+    /// Note: Uses broad watch with client-side filtering for accuracy.
+    ///
+    /// - Parameter filter: The filter to match documents against.
+    /// - Returns: An AsyncThrowingStream of QuerySnapshot values.
+    public func onQuerySnapshot(_ filter: [String: Any]) -> AsyncThrowingStream<QuerySnapshot, Error> {
+        let dbName = self.database
+        let collName = self.name
+        let grpcClient = self.client.client
+        let callOptions = self.client.callOptions
+        
+        // Pre-convert filter to Sendable proto type before Task
+        let pbFilter = Mongorpc_V1_Filter.from(filter)
+        
+        // Capture filter values for matching (convert to simple string-based comparison)
+        let filterValues = filter.mapValues { String(describing: $0) }
+        
+        return AsyncThrowingStream { continuation in
+            Task {
+                // Local state: map of ID -> Document
+                var state: [String: [String: Any]] = [:]
+                
+                // Fetch initial documents
+                do {
+                    var req = Mongorpc_V1_ListDocumentsRequest()
+                    req.database = dbName
+                    req.collection = collName
+                    req.filter = pbFilter
+                    
+                    let response = try await grpcClient.listDocuments(req, callOptions: callOptions)
+                    for doc in response.documents {
+                        let dict = doc.toDict()
+                        if let id = dict["_id"] as? String {
+                            state[id] = dict
+                        }
+                    }
+                } catch {
+                    continuation.finish(throwing: error)
+                    return
+                }
+                
+                // Emit initial state
+                continuation.yield(QuerySnapshot(documents: Array(state.values)))
+                
+                // Watch entire collection (broad watch)
+                var watchReq = Mongorpc_V1_WatchRequest()
+                watchReq.database = dbName
+                watchReq.collection = collName
+                
+                do {
+                    for try await resp in grpcClient.watch(watchReq, callOptions: callOptions) {
+                        if resp.hasEvent {
+                            let opType: String
+                            switch resp.event.operationType {
+                            case .insert: opType = "insert"
+                            case .update: opType = "update"
+                            case .replace: opType = "replace"
+                            case .delete: opType = "delete"
+                            case .invalidate: opType = "invalidate"
+                            default: opType = "unknown"
+                            }
+                            
+                            var docId: String?
+                            var fullDoc: [String: Any]?
+                            
+                            if resp.event.hasFullDocument {
+                                fullDoc = resp.event.fullDocument.toDict()
+                                docId = fullDoc?["_id"] as? String
+                            }
+                            if docId == nil && resp.event.hasDocumentKey {
+                                docId = resp.event.documentKey.hex
+                            }
+                            
+                            guard let id = docId else { continue }
+                            
+                            var stateChanged = false
+                            
+                            switch opType {
+                            case "insert", "update", "replace":
+                                if let doc = fullDoc, matchesFilter(doc, filterValues: filterValues) {
+                                    state[id] = doc
+                                    stateChanged = true
+                                } else if state[id] != nil {
+                                    state.removeValue(forKey: id)
+                                    stateChanged = true
+                                }
+                            case "delete":
+                                if state[id] != nil {
+                                    state.removeValue(forKey: id)
+                                    stateChanged = true
+                                }
+                            case "invalidate":
+                                state.removeAll()
+                                stateChanged = true
+                            default:
+                                break
+                            }
+                            
+                            if stateChanged {
+                                continuation.yield(QuerySnapshot(documents: Array(state.values)))
+                            }
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+        }
+    }
+}
+
+/// Simple filter matching for top-level field equality.
+private func matchesFilter(_ doc: [String: Any], filterValues: [String: String]) -> Bool {
+    if filterValues.isEmpty { return true }
+    
+    for (key, filterValue) in filterValues {
+        guard let docValue = doc[key] else { return false }
+        if String(describing: docValue) != filterValue {
+            return false
+        }
+    }
+    return true
+}

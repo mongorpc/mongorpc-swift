@@ -215,4 +215,147 @@ public class Collection {
             }
         }
     }
+
+    /// Streams real-time updates for a specific document.
+    ///
+    /// First emits the current state of the document, then emits updates
+    /// whenever the document is modified, replaced, or deleted.
+    ///
+    /// - Parameter docId: The 24-character hex ObjectId of the document.
+    /// - Returns: An AsyncThrowingStream of DocumentSnapshot values.
+    ///
+    /// Example:
+    /// ```swift
+    /// for try await snapshot in collection.onSnapshot("docId") {
+    ///     if snapshot.exists {
+    ///         print("Document: \(snapshot.data ?? [:])")
+    ///     } else {
+    ///         print("Document does not exist")
+    ///     }
+    /// }
+    /// ```
+    public func onSnapshot(_ docId: String) -> AsyncThrowingStream<DocumentSnapshot, Error> {
+        let dbName = self.database
+        let collName = self.name
+        let grpcClient = self.client.client
+        let callOptions = self.client.callOptions
+        
+        return AsyncThrowingStream { continuation in
+            Task {
+                // Validate docId (24 character hex string)
+                guard docId.count == 24,
+                      docId.allSatisfy({ $0.isHexDigit }) else {
+                    continuation.finish(throwing: NSError(
+                        domain: "MongoRPC",
+                        code: -1,
+                        userInfo: [NSLocalizedDescriptionKey: "Invalid document ID: must be 24 character hex string"]
+                    ))
+                    return
+                }
+                
+                // Fetch initial state
+                do {
+                    var req = Mongorpc_V1_GetDocumentRequest()
+                    req.database = dbName
+                    req.collection = collName
+                    req.id = Mongorpc_V1_ObjectId.with { $0.hex = docId }
+                    
+                    let response = try await grpcClient.getDocument(req, callOptions: callOptions)
+                    let data = response.document.toDict()
+                    
+                    continuation.yield(DocumentSnapshot(
+                        id: docId,
+                        data: data,
+                        exists: !data.isEmpty
+                    ))
+                } catch {
+                    // Document not found, emit empty state
+                    continuation.yield(DocumentSnapshot(
+                        id: docId,
+                        data: nil,
+                        exists: false
+                    ))
+                }
+                
+                // Start watching with document ID filter
+                var watchReq = Mongorpc_V1_WatchRequest()
+                watchReq.database = dbName
+                watchReq.collection = collName
+                watchReq.pipeline = [
+                    Mongorpc_V1_PipelineStage.with { ps in
+                        ps.raw = Mongorpc_V1_MapValue.with { mv in
+                            mv.fields = [
+                                "$match": Mongorpc_V1_Value.from([
+                                    "documentKey._id": ["$oid": docId]
+                                ])
+                            ]
+                        }
+                    }
+                ]
+                
+                do {
+                    for try await resp in grpcClient.watch(watchReq, callOptions: callOptions) {
+                        if resp.hasEvent {
+                            let opType: String
+                            switch resp.event.operationType {
+                            case .insert: opType = "insert"
+                            case .update: opType = "update"
+                            case .replace: opType = "replace"
+                            case .delete: opType = "delete"
+                            case .invalidate: opType = "invalidate"
+                            default: opType = "unknown"
+                            }
+                            
+                            switch opType {
+                            case "insert", "update", "replace":
+                                let data = resp.event.hasFullDocument ? resp.event.fullDocument.toDict() : nil
+                                continuation.yield(DocumentSnapshot(
+                                    id: docId,
+                                    data: data,
+                                    exists: data != nil
+                                ))
+                            case "delete":
+                                continuation.yield(DocumentSnapshot(
+                                    id: docId,
+                                    data: nil,
+                                    exists: false
+                                ))
+                            case "invalidate":
+                                continuation.yield(DocumentSnapshot(
+                                    id: docId,
+                                    data: nil,
+                                    exists: false
+                                ))
+                                continuation.finish()
+                                return
+                            default:
+                                break
+                            }
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+        }
+    }
+}
+
+/// Represents the current state of a document.
+public struct DocumentSnapshot: @unchecked Sendable {
+    /// The document's unique identifier.
+    public let id: String
+    
+    /// The document's data. Nil if the document doesn't exist.
+    public let data: [String: Any]?
+    
+    /// Whether the document exists.
+    public let exists: Bool
+    
+    public init(id: String, data: [String: Any]?, exists: Bool) {
+        self.id = id
+        self.data = data
+        self.exists = exists
+    }
 }
